@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALEM CHAMBER - THE ORIGINAL BROSKI RESET TEMPLE</title>
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #1a1a1a;
+            --text-color: #ffffff;
+            --accent-color: #4a4a4a;
+            --glow-color: rgba(0, 0, 0, 0.5);
+            --ink-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        body {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(45deg, var(--ink-color) 25%, transparent 25%),
+                linear-gradient(-45deg, var(--ink-color) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--ink-color) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--ink-color) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px var(--glow-color);
+            position: relative;
+            animation: inkDrop 2s infinite;
+        }
+
+        @keyframes inkDrop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .chamber-content {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid var(--primary-color);
+            padding: 2rem;
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .ink-flow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ink-drop {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--ink-color);
+            border-radius: 50%;
+            animation: inkFlow 3s infinite;
+        }
+
+        @keyframes inkFlow {
+            0% { transform: translateY(-100px) scale(0); opacity: 0; }
+            50% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(100px) scale(0); opacity: 0; }
+        }
+
+        .chamber-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .energy-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            animation: inkFill 2s infinite;
+        }
+
+        @keyframes inkFill {
+            0%, 100% { width: 30%; }
+            50% { width: 70%; }
+        }
+
+        .chamber-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            animation: inkPulse 1s infinite;
+        }
+
+        @keyframes inkPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .calligraphy {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+            animation: calligraphyFloat 10s infinite;
+        }
+
+        @keyframes calligraphyFloat {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            50% { transform: translate(100px, -50px) rotate(180deg); opacity: 0.3; }
+            100% { transform: translate(200px, 0) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">KALEM</h1>
+        
+        <div class="ink-flow">
+            <!-- Ink drops will be added dynamically -->
+        </div>
+
+        <div class="chamber-content">
+            <div class="chamber-text">
+                <p>THE CHAMBER OF WRITING</p>
+                <p>WHERE THOUGHTS ARE INSCRIBED</p>
+                <p>AND DESTINY IS WRITTEN</p>
+            </div>
+
+            <div class="energy-bar">
+                <div class="energy-fill"></div>
+            </div>
+
+            <div class="chamber-stats">
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div>DAYS REMAINING</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">60%</div>
+                    <div>ALIGNMENT</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">WATCH</div>
+                    <div>TIER</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create ink drops
+        const inkFlow = document.querySelector('.ink-flow');
+        for (let i = 0; i < 10; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'ink-drop';
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDelay = `${i * 0.3}s`;
+            inkFlow.appendChild(drop);
+        }
+
+        // Create floating calligraphy
+        const container = document.querySelector('.container');
+        const calligraphyTexts = [
+            "書", "文", "字", "墨", "筆", "紙", "硯", "詩"
+        ];
+        
+        for (let i = 0; i < calligraphyTexts.length; i++) {
+            const text = document.createElement('div');
+            text.className = 'calligraphy';
+            text.textContent = calligraphyTexts[i];
+            text.style.left = `${Math.random() * 100}%`;
+            text.style.top = `${Math.random() * 100}%`;
+            text.style.animationDelay = `${i * 1}s`;
+            container.appendChild(text);
+        }
+
+        // Add ambient sound effects
+        const audio = new Audio('ink.mp3');
+        audio.loop = true;
+        audio.volume = 0.3;
+        audio.play().catch(e => console.log('Audio playback failed:', e));
+
+        // Add mouse interaction effects
+        document.addEventListener('mousemove', (e) => {
+            const inkDrops = document.querySelectorAll('.ink-drop');
+            inkDrops.forEach(drop => {
+                const rect = drop.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const distance = Math.sqrt(x * x + y * y);
+                
+                if (distance < 100) {
+                    drop.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZBARFUCKER CHAMBER - THE ORIGINAL BROSKI RESET TEMPLE</title>
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #ff3333;
+            --glow-color: rgba(255, 0, 0, 0.5);
+            --chaos-color: rgba(255, 0, 0, 0.2);
+        }
+        
+        body {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, var(--chaos-color) 0%, transparent 50%),
+                repeating-linear-gradient(0deg, transparent 0px, transparent 1px, var(--chaos-color) 1px, var(--chaos-color) 2px);
+            animation: chaos 0.1s infinite;
+        }
+
+        @keyframes chaos {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 100% 100%, 0 0; }
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transform-style: preserve-3d;
+        }
+
+        .title {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px var(--glow-color);
+            animation: flicker 0.1s infinite;
+            position: relative;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .chamber-content {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--primary-color);
+            padding: 2rem;
+            box-shadow: 0 0 30px var(--glow-color);
+            animation: shake 0.1s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+        }
+
+        .chaos-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: var(--primary-color);
+            opacity: 0.1;
+        }
+
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: scan 2s linear infinite;
+        }
+
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .chamber-text {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--glow-color);
+            animation: glitch 0.1s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .energy-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            animation: energyChaos 1s infinite;
+        }
+
+        @keyframes energyChaos {
+            0%, 100% { width: 30%; }
+            25% { width: 50%; }
+            50% { width: 70%; }
+            75% { width: 40%; }
+        }
+
+        .chamber-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            animation: statPulse 1s infinite;
+        }
+
+        @keyframes statPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">ZBARFUCKER</h1>
+        
+        <div class="chaos-grid">
+            <!-- Grid lines will be added dynamically -->
+        </div>
+
+        <div class="chamber-content">
+            <div class="chamber-text">
+                <p>THE CHAMBER OF CHAOS</p>
+                <p>WHERE ORDER IS DESTROYED</p>
+                <p>AND CHAOS REIGNS</p>
+            </div>
+
+            <div class="energy-bar">
+                <div class="energy-fill"></div>
+            </div>
+
+            <div class="chamber-stats">
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div>DAYS REMAINING</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">45%</div>
+                    <div>ALIGNMENT</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">WATCH</div>
+                    <div>TIER</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create chaos grid
+        const grid = document.querySelector('.chaos-grid');
+        const gridSize = 20;
+        
+        for (let i = 0; i < gridSize; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${(i / gridSize) * 100}%`;
+            horizontal.style.animationDelay = `${i * 0.1}s`;
+            grid.appendChild(horizontal);
+
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${(i / gridSize) * 100}%`;
+            vertical.style.animationDelay = `${i * 0.1}s`;
+            grid.appendChild(vertical);
+        }
+
+        // Add ambient sound effects
+        const audio = new Audio('chaos.mp3');
+        audio.loop = true;
+        audio.volume = 0.3;
+        audio.play().catch(e => console.log('Audio playback failed:', e));
+
+        // Add mouse interaction effects
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            container.style.transform = `
+                perspective(1000px)
+                rotateX(${(y - 0.5) * 20}deg)
+                rotateY(${(x - 0.5) * 20}deg)
+            `;
+        });
+    </script>
+</body>
+</html> 

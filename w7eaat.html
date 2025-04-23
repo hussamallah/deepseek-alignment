@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W7EAAT CHAMBER - THE ORIGINAL BROSKI RESET TEMPLE</title>
+    <style>
+        :root {
+            --primary-color: #3a0ca3;
+            --secondary-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #4cc9f0;
+            --glow-color: rgba(60, 12, 163, 0.3);
+            --containment-color: rgba(60, 12, 163, 0.1);
+        }
+        
+        body {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(90deg, var(--containment-color) 1px, transparent 1px),
+                linear-gradient(0deg, var(--containment-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 20px var(--glow-color);
+            position: relative;
+            animation: controlPulse 2s infinite;
+        }
+
+        @keyframes controlPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .chamber-content {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--primary-color);
+            padding: 2rem;
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .containment-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background-image: 
+                linear-gradient(90deg, var(--containment-color) 1px, transparent 1px),
+                linear-gradient(0deg, var(--containment-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+
+        .control-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: controlRotate 10s linear infinite;
+        }
+
+        @keyframes controlRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .control-node {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: nodePulse 2s infinite;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        .chamber-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .energy-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            animation: controlFill 2s infinite;
+        }
+
+        @keyframes controlFill {
+            0%, 100% { width: 30%; }
+            50% { width: 70%; }
+        }
+
+        .chamber-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            animation: statControl 1s infinite;
+        }
+
+        @keyframes statControl {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">W7EAAT</h1>
+        
+        <div class="containment-grid"></div>
+        <div class="control-circle">
+            <!-- Control nodes will be added dynamically -->
+        </div>
+
+        <div class="chamber-content">
+            <div class="chamber-text">
+                <p>THE CHAMBER OF CONTROL</p>
+                <p>WHERE CHAOS IS CONTAINED</p>
+                <p>AND ORDER IS MAINTAINED</p>
+            </div>
+
+            <div class="energy-bar">
+                <div class="energy-fill"></div>
+            </div>
+
+            <div class="chamber-stats">
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div>DAYS REMAINING</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">85%</div>
+                    <div>ALIGNMENT</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">ALPHA</div>
+                    <div>TIER</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create control nodes
+        const circle = document.querySelector('.control-circle');
+        const nodeCount = 12;
+        
+        for (let i = 0; i < nodeCount; i++) {
+            const node = document.createElement('div');
+            node.className = 'control-node';
+            const angle = (i / nodeCount) * Math.PI * 2;
+            const radius = 140;
+            node.style.left = `${50 + Math.cos(angle) * radius}px`;
+            node.style.top = `${50 + Math.sin(angle) * radius}px`;
+            node.style.animationDelay = `${i * 0.2}s`;
+            circle.appendChild(node);
+        }
+
+        // Add ambient sound effects
+        const audio = new Audio('control.mp3');
+        audio.loop = true;
+        audio.volume = 0.3;
+        audio.play().catch(e => console.log('Audio playback failed:', e));
+
+        // Add mouse interaction effects
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            container.style.transform = `
+                perspective(1000px)
+                rotateX(${(y - 0.5) * 15}deg)
+                rotateY(${(x - 0.5) * 15}deg)
+            `;
+        });
+    </script>
+</body>
+</html> 

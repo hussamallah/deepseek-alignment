@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CONTROL ROOM - THE ORIGINAL BROSKI RESET TEMPLE</title>
+  <style>
+    :root {
+      --primary-color: #ff0000;
+      --secondary-color: #000000;
+      --text-color: #ffffff;
+      --accent-color: #ff3333;
+      --glow-color: rgba(255, 0, 0, 0.5);
+      --alpha-color: #00ff00;
+      --watchlist-color: #ffff00;
+      --discard-color: #ff0000;
+    }
+    
+    body {
+      background: var(--secondary-color);
+      color: var(--text-color);
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .header {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 20px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      margin: 0;
+      text-shadow: 0 0 20px var(--glow-color);
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px var(--glow-color); }
+      50% { text-shadow: 0 0 30px var(--glow-color); }
+    }
+
+    .live-feed {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .heat-map {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+    }
+
+    .override-panel {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+    }
+
+    .tier-panel {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+    }
+
+    .user-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--primary-color);
+      padding: 10px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .user-card.alpha {
+      border-color: var(--alpha-color);
+    }
+
+    .user-card.watchlist {
+      border-color: var(--watchlist-color);
+    }
+
+    .user-card.discard {
+      border-color: var(--discard-color);
+    }
+
+    .command-input {
+      background: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--text-color);
+      padding: 10px;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .tier-button {
+      padding: 5px 10px;
+      margin: 0 5px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-color);
+      border: 1px solid;
+    }
+
+    .tier-button.alpha {
+      border-color: var(--alpha-color);
+    }
+
+    .tier-button.watchlist {
+      border-color: var(--watchlist-color);
+    }
+
+    .tier-button.discard {
+      border-color: var(--discard-color);
+    }
+
+    .heat-map-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-top: 20px;
+    }
+
+    .heat-cell {
+      aspect-ratio: 1;
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid var(--primary-color);
+      transition: background 0.3s;
+    }
+
+    .heat-cell:hover {
+      background: rgba(255, 0, 0, 0.5);
+    }
+
+    .stats-panel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="header">
+      <h1>CONTROL ROOM</h1>
+    </div>
+
+    <div class="live-feed">
+      <h2>LIVE FEED</h2>
+      <div id="userFeed">
+        <!-- User cards will be added here -->
+      </div>
+    </div>
+
+    <div class="heat-map">
+      <h2>EMOTIONAL HEAT MAP</h2>
+      <div class="heat-map-grid" id="heatMap">
+        <!-- Heat map cells will be added here -->
+      </div>
+      <div class="stats-panel">
+        <div class="stat-card">
+          <div class="stat-value" id="totalUsers">0</div>
+          <div>Total Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="activeUsers">0</div>
+          <div>Active Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="conversionRate">0%</div>
+          <div>Conversion Rate</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="override-panel">
+      <h2>OVERRIDE PANEL</h2>
+      <input type="text" class="command-input" id="overrideInput" placeholder="ENTER OVERRIDE COMMAND...">
+      <div id="overrideHistory">
+        <!-- Override history will be added here -->
+      </div>
+    </div>
+
+    <div class="tier-panel">
+      <h2>TIER ASSIGNMENT</h2>
+      <div id="tierAssignment">
+        <!-- Tier assignment controls will be added here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mock data for demonstration
+    const mockUsers = [
+      { id: 1, name: "User1", archetype: "W7EAAT", day: 3, status: "active", tier: "watchlist" },
+      { id: 2, name: "User2", archetype: "AL7ANOON", day: 5, status: "active", tier: "alpha" },
+      { id: 3, name: "User3", archetype: "ZBARFUCKER", day: 1, status: "active", tier: "discard" }
+    ];
+
+    // Initialize the interface
+    function init() {
+      updateUserFeed();
+      createHeatMap();
+      updateStats();
+    }
+
+    function updateUserFeed() {
+      const feed = document.getElementById('userFeed');
+      feed.innerHTML = '';
+      
+      mockUsers.forEach(user => {
+        const card = document.createElement('div');
+        card.className = `user-card ${user.tier}`;
+        card.innerHTML = `
+          <div>
+            <strong>${user.name}</strong><br>
+            Archetype: ${user.archetype}<br>
+            Day: ${user.day}/7
+          </div>
+          <div>
+            <button class="tier-button alpha" onclick="changeTier(${user.id}, 'alpha')">Alpha</button>
+            <button class="tier-button watchlist" onclick="changeTier(${user.id}, 'watchlist')">Watch</button>
+            <button class="tier-button discard" onclick="changeTier(${user.id}, 'discard')">Discard</button>
+          </div>
+        `;
+        feed.appendChild(card);
+      });
+    }
+
+    function createHeatMap() {
+      const heatMap = document.getElementById('heatMap');
+      heatMap.innerHTML = '';
+      
+      for (let i = 0; i < 49; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'heat-cell';
+        cell.style.background = `rgba(255, 0, 0, ${Math.random() * 0.5})`;
+        heatMap.appendChild(cell);
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('totalUsers').textContent = mockUsers.length;
+      document.getElementById('activeUsers').textContent = mockUsers.filter(u => u.status === 'active').length;
+      document.getElementById('conversionRate').textContent = '25%';
+    }
+
+    function changeTier(userId, newTier) {
+      const user = mockUsers.find(u => u.id === userId);
+      if (user) {
+        user.tier = newTier;
+        updateUserFeed();
+      }
+    }
+
+    // Handle override commands
+    const overrideInput = document.getElementById('overrideInput');
+    overrideInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const command = overrideInput.value;
+        overrideInput.value = '';
+        
+        // Add command to history
+        const history = document.getElementById('overrideHistory');
+        const entry = document.createElement('div');
+        entry.textContent = `> ${command}`;
+        history.appendChild(entry);
+        
+        // Process command (mock implementation)
+        setTimeout(() => {
+          const response = document.createElement('div');
+          response.textContent = `> Command executed: ${command}`;
+          history.appendChild(response);
+        }, 1000);
+      }
+    });
+
+    // Initialize the control room
+    init();
+  </script>
+</body>
+</html> 

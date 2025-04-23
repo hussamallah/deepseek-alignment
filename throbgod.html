@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THROBGOD CHAMBER - THE ORIGINAL BROSKI RESET TEMPLE</title>
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #ff3333;
+            --glow-color: rgba(255, 0, 0, 0.5);
+            --power-color: rgba(255, 0, 0, 0.3);
+        }
+        
+        body {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, var(--power-color) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, transparent 0px, transparent 1px, var(--power-color) 1px, var(--power-color) 2px);
+            animation: powerPulse 2s infinite;
+        }
+
+        @keyframes powerPulse {
+            0%, 100% { background-size: 100% 100%, 20px 20px; }
+            50% { background-size: 150% 150%, 20px 20px; }
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            perspective: 1000px;
+        }
+
+        .title {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px var(--glow-color);
+            animation: powerGlow 2s infinite;
+            position: relative;
+        }
+
+        @keyframes powerGlow {
+            0%, 100% { text-shadow: 0 0 20px var(--glow-color); }
+            50% { text-shadow: 0 0 30px var(--glow-color), 0 0 50px var(--glow-color); }
+        }
+
+        .chamber-content {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--primary-color);
+            padding: 2rem;
+            box-shadow: 0 0 30px var(--glow-color);
+            animation: powerFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes powerFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+
+        .power-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: powerRotate 10s linear infinite;
+        }
+
+        @keyframes powerRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .power-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: var(--primary-color);
+            left: 50%;
+            transform-origin: bottom;
+            animation: powerLine 2s infinite;
+        }
+
+        @keyframes powerLine {
+            0%, 100% { height: 0%; opacity: 0; }
+            50% { height: 100%; opacity: 1; }
+        }
+
+        .chamber-text {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .energy-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            animation: powerFill 2s infinite;
+        }
+
+        @keyframes powerFill {
+            0%, 100% { width: 30%; }
+            50% { width: 70%; }
+        }
+
+        .chamber-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            animation: statPower 1s infinite;
+        }
+
+        @keyframes statPower {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">THROBGOD</h1>
+        
+        <div class="power-circle">
+            <!-- Power lines will be added dynamically -->
+        </div>
+
+        <div class="chamber-content">
+            <div class="chamber-text">
+                <p>THE CHAMBER OF POWER</p>
+                <p>WHERE WEAKNESS IS CRUSHED</p>
+                <p>AND STRENGTH IS ASCENDED</p>
+            </div>
+
+            <div class="energy-bar">
+                <div class="energy-fill"></div>
+            </div>
+
+            <div class="chamber-stats">
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div>DAYS REMAINING</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">65%</div>
+                    <div>ALIGNMENT</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">WATCH</div>
+                    <div>TIER</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create power lines
+        const circle = document.querySelector('.power-circle');
+        const lineCount = 8;
+        
+        for (let i = 0; i < lineCount; i++) {
+            const line = document.createElement('div');
+            line.className = 'power-line';
+            line.style.transform = `rotate(${i * (360 / lineCount)}deg)`;
+            line.style.animationDelay = `${i * 0.2}s`;
+            circle.appendChild(line);
+        }
+
+        // Add ambient sound effects
+        const audio = new Audio('power.mp3');
+        audio.loop = true;
+        audio.volume = 0.3;
+        audio.play().catch(e => console.log('Audio playback failed:', e));
+
+        // Add mouse interaction effects
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            container.style.transform = `
+                perspective(1000px)
+                rotateX(${(y - 0.5) * 15}deg)
+                rotateY(${(x - 0.5) * 15}deg)
+            `;
+        });
+    </script>
+</body>
+</html> 

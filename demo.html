@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek System Demo</title>
+    <style>
+        :root {
+            --primary-color: #3a0ca3;
+            --secondary-color: #1a1a1a;
+            --text-color: #ffffff;
+            --accent-color: #4ecdc4;
+            --glow-color: rgba(58, 12, 163, 0.3);
+        }
+
+        body {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .system-status {
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid var(--primary-color);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-label {
+            color: var(--accent-color);
+        }
+
+        .status-value {
+            color: var(--primary-color);
+        }
+
+        .biofeedback-ball {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            margin: 2rem auto;
+            transition: all 0.3s ease;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-button {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .control-button:hover {
+            background: var(--primary-color);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .truth-input {
+            width: 100%;
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: inherit;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .submit-button:hover {
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .log {
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid var(--primary-color);
+            padding: 1rem;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 2rem;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .positive {
+            color: #4CAF50;
+        }
+
+        .negative {
+            color: #F44336;
+        }
+
+        .neutral {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">DEEP SEEK SYSTEM DEMO</h1>
+        
+        <div class="system-status">
+            <div class="status-item">
+                <span class="status-label">Archetype:</span>
+                <span class="status-value" id="archetype-status">Not Detected</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">EAS Score:</span>
+                <span class="status-value" id="eas-status">0</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Daily Truths:</span>
+                <span class="status-value" id="truths-status">0/7</span>
+            </div>
+        </div>
+
+        <div class="biofeedback-ball"></div>
+
+        <div class="control-panel">
+            <button class="control-button" id="detect-archetype">Detect Archetype</button>
+            <button class="control-button" id="increase-eas">Increase EAS</button>
+            <button class="control-button" id="decrease-eas">Decrease EAS</button>
+        </div>
+
+        <textarea class="truth-input" placeholder="Enter your truth..." id="truth-input"></textarea>
+        <button class="submit-button" id="submit-truth">Submit Truth</button>
+
+        <div class="log" id="system-log"></div>
+    </div>
+
+    <script type="module">
+        import deepSeek from './deepseek.js';
+
+        // DOM Elements
+        const archetypeStatus = document.getElementById('archetype-status');
+        const easStatus = document.getElementById('eas-status');
+        const truthsStatus = document.getElementById('truths-status');
+        const biofeedbackBall = document.querySelector('.biofeedback-ball');
+        const detectArchetypeBtn = document.getElementById('detect-archetype');
+        const increaseEasBtn = document.getElementById('increase-eas');
+        const decreaseEasBtn = document.getElementById('decrease-eas');
+        const truthInput = document.getElementById('truth-input');
+        const submitTruthBtn = document.getElementById('submit-truth');
+        const systemLog = document.getElementById('system-log');
+
+        // Log function
+        function log(message, type = 'neutral') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            systemLog.appendChild(entry);
+            systemLog.scrollTop = systemLog.scrollHeight;
+        }
+
+        // Update status displays
+        function updateStatus() {
+            archetypeStatus.textContent = deepSeek.archetypeDetector.getCurrent() || 'Not Detected';
+            easStatus.textContent = deepSeek.easEngine.getScore();
+            truthsStatus.textContent = `${deepSeek.chamberSystem.dailyCount}/7`;
+        }
+
+        // Event Listeners
+        detectArchetypeBtn.addEventListener('click', () => {
+            const answers = ['A', 'B', 'C', 'D', 'E']; // Sample answers
+            const archetype = deepSeek.archetypeDetector.analyze(answers);
+            log(`Archetype detected: ${archetype}`, 'positive');
+            updateStatus();
+        });
+
+        increaseEasBtn.addEventListener('click', () => {
+            deepSeek.easEngine.increaseScore();
+            log('EAS increased', 'positive');
+            updateStatus();
+        });
+
+        decreaseEasBtn.addEventListener('click', () => {
+            deepSeek.easEngine.decreaseScore();
+            log('EAS decreased', 'negative');
+            updateStatus();
+        });
+
+        submitTruthBtn.addEventListener('click', () => {
+            const truth = truthInput.value.trim();
+            if (truth) {
+                const result = deepSeek.chamberSystem.submitTruth(truth);
+                if (result) {
+                    log('Truth submitted successfully', 'positive');
+                } else {
+                    log('Truth submission failed', 'negative');
+                }
+                truthInput.value = '';
+                updateStatus();
+            }
+        });
+
+        // Initialize
+        log('DeepSeek System Initialized', 'neutral');
+        updateStatus();
+    </script>
+</body>
+</html> 

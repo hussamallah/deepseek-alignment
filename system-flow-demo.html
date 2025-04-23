@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek System Flow Demo</title>
+    <style>
+        :root {
+            --user-input: #f72585;
+            --archetype: #6e00ff;
+            --truthbomb: #f8961e;
+            --eas: #43aa8b;
+            --biofeedback: #90be6d;
+            --chamber: #577590;
+            --dependency: #adb5bd;
+            --complete: #000000;
+            --background: #1a1a1a;
+            --text: #ffffff;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--user-input);
+            text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+        }
+
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .flow-step.active {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background: var(--text);
+            color: var(--background);
+        }
+
+        .step-content {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .step-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -20px;
+            width: 20px;
+            height: 2px;
+            background: currentColor;
+        }
+
+        .step-1 { color: var(--user-input); }
+        .step-2 { color: var(--archetype); }
+        .step-3 { color: var(--truthbomb); }
+        .step-4 { color: var(--eas); }
+        .step-5 { color: var(--biofeedback); }
+        .step-6 { color: var(--chamber); }
+        .step-7 { color: var(--dependency); }
+        .step-8 { color: var(--complete); }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-button {
+            background: transparent;
+            border: 2px solid var(--user-input);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .control-button:hover {
+            background: var(--user-input);
+            box-shadow: 0 0 20px rgba(247, 37, 133, 0.3);
+        }
+
+        .status-panel {
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid var(--user-input);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-label {
+            color: var(--text);
+        }
+
+        .status-value {
+            color: var(--user-input);
+        }
+
+        .log {
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid var(--user-input);
+            padding: 1rem;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 2rem;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--user-input);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">DEEP SEEK SYSTEM FLOW DEMO</h1>
+
+        <div class="status-panel">
+            <div class="status-item">
+                <span class="status-label">Current Step:</span>
+                <span class="status-value" id="current-step">User Input</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">System Status:</span>
+                <span class="status-value" id="system-status">Initialized</span>
+            </div>
+        </div>
+
+        <div class="flow-container">
+            <div class="flow-step step-1" id="step-1">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>User Input</h3>
+                    <p>Initial interaction point for user data</p>
+                </div>
+            </div>
+            <div class="flow-step step-2" id="step-2">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>ArchetypeDetector.v5</h3>
+                    <p>Pattern recognition and analysis</p>
+                </div>
+            </div>
+            <div class="flow-step step-3" id="step-3">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>TruthBombSequencer.v3</h3>
+                    <p>Truth processing and sequencing</p>
+                </div>
+            </div>
+            <div class="flow-step step-4" id="step-4">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>EAS_Engine.v2</h3>
+                    <p>Emotional Access Score management</p>
+                </div>
+            </div>
+            <div class="flow-step step-5" id="step-5">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Biofeedback_UI</h3>
+                    <p>Real-time user feedback</p>
+                </div>
+            </div>
+            <div class="flow-step step-6" id="step-6">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3>ChamberSystem.v1</h3>
+                    <p>Truth chamber management</p>
+                </div>
+            </div>
+            <div class="flow-step step-7" id="step-7">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h3>DependencyMapper.v1</h3>
+                    <p>System dependency tracking</p>
+                </div>
+            </div>
+            <div class="flow-step step-8" id="step-8">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h3>Complete Truth Extraction</h3>
+                    <p>Final output and results</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <button class="control-button" id="start-flow">Start Flow</button>
+            <button class="control-button" id="reset-flow">Reset Flow</button>
+            <button class="control-button" id="next-step">Next Step</button>
+        </div>
+
+        <div class="log" id="system-log"></div>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('.flow-step');
+        const currentStep = document.getElementById('current-step');
+        const systemStatus = document.getElementById('system-status');
+        const systemLog = document.getElementById('system-log');
+        let currentStepIndex = 0;
+
+        function log(message) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            systemLog.appendChild(entry);
+            systemLog.scrollTop = systemLog.scrollHeight;
+        }
+
+        function updateStep(index) {
+            steps.forEach(step => step.classList.remove('active'));
+            steps[index].classList.add('active');
+            currentStep.textContent = steps[index].querySelector('h3').textContent;
+            systemStatus.textContent = 'Processing';
+            log(`Processing step: ${steps[index].querySelector('h3').textContent}`);
+        }
+
+        function resetFlow() {
+            currentStepIndex = 0;
+            steps.forEach(step => step.classList.remove('active'));
+            currentStep.textContent = 'User Input';
+            systemStatus.textContent = 'Initialized';
+            systemLog.innerHTML = '';
+            log('System reset');
+        }
+
+        document.getElementById('start-flow').addEventListener('click', () => {
+            resetFlow();
+            updateStep(0);
+        });
+
+        document.getElementById('reset-flow').addEventListener('click', resetFlow);
+
+        document.getElementById('next-step').addEventListener('click', () => {
+            if (currentStepIndex < steps.length - 1) {
+                currentStepIndex++;
+                updateStep(currentStepIndex);
+            } else {
+                systemStatus.textContent = 'Complete';
+                log('System flow completed');
+            }
+        });
+
+        // Initialize
+        resetFlow();
+    </script>
+</body>
+</html> 

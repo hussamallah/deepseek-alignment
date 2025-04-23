@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WAR ROOM - THE ORIGINAL BROSKI RESET TEMPLE</title>
+  <style>
+    :root {
+      --primary-color: #ff0000;
+      --secondary-color: #000000;
+      --text-color: #ffffff;
+      --accent-color: #ff3333;
+      --glow-color: rgba(255, 0, 0, 0.5);
+    }
+    
+    body {
+      background: var(--secondary-color);
+      color: var(--text-color);
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .header {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 20px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      margin: 0;
+      text-shadow: 0 0 20px var(--glow-color);
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px var(--glow-color); }
+      50% { text-shadow: 0 0 30px var(--glow-color); }
+    }
+
+    .conversion-panel {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+    }
+
+    .ad-performance {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+    }
+
+    .pipeline-tracker {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+    }
+
+    .strategy-panel {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--primary-color);
+      padding: 20px;
+    }
+
+    .chart-container {
+      height: 200px;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .chart-bar {
+      position: absolute;
+      bottom: 0;
+      background: var(--primary-color);
+      width: 30px;
+      transition: height 0.5s;
+    }
+
+    .ad-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--primary-color);
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .pipeline-stage {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--primary-color);
+    }
+
+    .strategy-input {
+      background: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--text-color);
+      padding: 10px;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="header">
+      <h1>WAR ROOM</h1>
+    </div>
+
+    <div class="conversion-panel">
+      <h2>CONVERSION METRICS</h2>
+      <div class="chart-container" id="conversionChart">
+        <!-- Chart bars will be added here -->
+      </div>
+      <div class="metric-value" id="totalConversion">0%</div>
+    </div>
+
+    <div class="ad-performance">
+      <h2>AD PERFORMANCE</h2>
+      <div id="adCards">
+        <!-- Ad cards will be added here -->
+      </div>
+    </div>
+
+    <div class="pipeline-tracker">
+      <h2>SALES PIPELINE</h2>
+      <div id="pipelineStages">
+        <!-- Pipeline stages will be added here -->
+      </div>
+    </div>
+
+    <div class="strategy-panel">
+      <h2>STRATEGY COMMANDS</h2>
+      <input type="text" class="strategy-input" id="strategyInput" placeholder="ENTER STRATEGY COMMAND...">
+      <div id="strategyHistory">
+        <!-- Strategy history will be added here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mock data for demonstration
+    const mockData = {
+      conversions: {
+        W7EAAT: 35,
+        AL7ANOON: 25,
+        ZBARFUCKER: 15,
+        THROBGOD: 20,
+        ASHAR: 30,
+        WARAQ: 10,
+        KALEM: 5
+      },
+      ads: [
+        { id: 1, name: "Control Ad", impressions: 1000, clicks: 100, conversions: 10 },
+        { id: 2, name: "Love Ad", impressions: 800, clicks: 80, conversions: 8 },
+        { id: 3, name: "Chaos Ad", impressions: 600, clicks: 60, conversions: 6 }
+      ],
+      pipeline: [
+        { stage: "Free Week", count: 100 },
+        { stage: "Core Alignment", count: 50 },
+        { stage: "Ongoing", count: 25 }
+      ]
+    };
+
+    // Initialize the interface
+    function init() {
+      createConversionChart();
+      updateAdPerformance();
+      updatePipeline();
+    }
+
+    function createConversionChart() {
+      const chart = document.getElementById('conversionChart');
+      chart.innerHTML = '';
+      
+      const maxValue = Math.max(...Object.values(mockData.conversions));
+      const barWidth = 30;
+      const spacing = 10;
+      
+      Object.entries(mockData.conversions).forEach(([archetype, value], index) => {
+        const bar = document.createElement('div');
+        bar.className = 'chart-bar';
+        bar.style.left = `${index * (barWidth + spacing)}px`;
+        bar.style.height = `${(value / maxValue) * 100}%`;
+        bar.title = `${archetype}: ${value}%`;
+        chart.appendChild(bar);
+      });
+      
+      document.getElementById('totalConversion').textContent = 
+        `${Math.round(Object.values(mockData.conversions).reduce((a, b) => a + b) / 7)}%`;
+    }
+
+    function updateAdPerformance() {
+      const container = document.getElementById('adCards');
+      container.innerHTML = '';
+      
+      mockData.ads.forEach(ad => {
+        const card = document.createElement('div');
+        card.className = 'ad-card';
+        card.innerHTML = `
+          <strong>${ad.name}</strong><br>
+          Impressions: ${ad.impressions}<br>
+          Clicks: ${ad.clicks}<br>
+          Conversions: ${ad.conversions}<br>
+          CTR: ${(ad.clicks / ad.impressions * 100).toFixed(2)}%
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updatePipeline() {
+      const container = document.getElementById('pipelineStages');
+      container.innerHTML = '';
+      
+      mockData.pipeline.forEach(stage => {
+        const element = document.createElement('div');
+        element.className = 'pipeline-stage';
+        element.innerHTML = `
+          <div>${stage.stage}</div>
+          <div>${stage.count} users</div>
+        `;
+        container.appendChild(element);
+      });
+    }
+
+    // Handle strategy commands
+    const strategyInput = document.getElementById('strategyInput');
+    strategyInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const command = strategyInput.value;
+        strategyInput.value = '';
+        
+        // Add command to history
+        const history = document.getElementById('strategyHistory');
+        const entry = document.createElement('div');
+        entry.textContent = `> ${command}`;
+        history.appendChild(entry);
+        
+        // Process command (mock implementation)
+        setTimeout(() => {
+          const response = document.createElement('div');
+          response.textContent = `> Strategy updated: ${command}`;
+          history.appendChild(response);
+        }, 1000);
+      }
+    });
+
+    // Initialize the war room
+    init();
+  </script>
+</body>
+</html> 

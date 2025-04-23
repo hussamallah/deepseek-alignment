@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL7ANOON CHAMBER - THE ORIGINAL BROSKI RESET TEMPLE</title>
+    <style>
+        :root {
+            --primary-color: #f72585;
+            --secondary-color: #1a1a1a;
+            --text-color: #ffd6e7;
+            --accent-color: #ff9ebb;
+            --glow-color: rgba(247, 37, 133, 0.3);
+            --warmth-color: rgba(247, 37, 133, 0.1);
+        }
+        
+        body {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, var(--warmth-color) 0%, transparent 50%),
+                repeating-linear-gradient(0deg, transparent 0px, transparent 1px, var(--warmth-color) 1px, var(--warmth-color) 2px);
+            animation: warmthPulse 2s infinite;
+        }
+
+        @keyframes warmthPulse {
+            0%, 100% { background-size: 100% 100%, 20px 20px; }
+            50% { background-size: 150% 150%, 20px 20px; }
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 20px var(--glow-color);
+            position: relative;
+            animation: heartbeat 2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .chamber-content {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid var(--primary-color);
+            padding: 2rem;
+            box-shadow: 0 0 30px var(--glow-color);
+            animation: contentFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes contentFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+
+        .heart-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: heartRotate 10s linear infinite;
+        }
+
+        @keyframes heartRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .heart-beat {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: beat 2s infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        .chamber-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .energy-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            animation: heartFill 2s infinite;
+        }
+
+        @keyframes heartFill {
+            0%, 100% { width: 30%; }
+            50% { width: 70%; }
+        }
+
+        .chamber-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            animation: statHeart 1s infinite;
+        }
+
+        @keyframes statHeart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">AL7ANOON</h1>
+        
+        <div class="heart-circle">
+            <!-- Heart beats will be added dynamically -->
+        </div>
+
+        <div class="chamber-content">
+            <div class="chamber-text">
+                <p>THE CHAMBER OF LOVE</p>
+                <p>WHERE HEARTS ARE HEALED</p>
+                <p>AND SOULS ARE EMBRACED</p>
+            </div>
+
+            <div class="energy-bar">
+                <div class="energy-fill"></div>
+            </div>
+
+            <div class="chamber-stats">
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div>DAYS REMAINING</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">80%</div>
+                    <div>ALIGNMENT</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">ALPHA</div>
+                    <div>TIER</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create heart beats
+        const circle = document.querySelector('.heart-circle');
+        const beatCount = 8;
+        
+        for (let i = 0; i < beatCount; i++) {
+            const beat = document.createElement('div');
+            beat.className = 'heart-beat';
+            const angle = (i / beatCount) * Math.PI * 2;
+            const radius = 140;
+            beat.style.left = `${50 + Math.cos(angle) * radius}px`;
+            beat.style.top = `${50 + Math.sin(angle) * radius}px`;
+            beat.style.animationDelay = `${i * 0.2}s`;
+            circle.appendChild(beat);
+        }
+
+        // Add ambient sound effects
+        const audio = new Audio('heartbeat.mp3');
+        audio.loop = true;
+        audio.volume = 0.3;
+        audio.play().catch(e => console.log('Audio playback failed:', e));
+
+        // Add mouse interaction effects
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            container.style.transform = `
+                perspective(1000px)
+                rotateX(${(y - 0.5) * 15}deg)
+                rotateY(${(x - 0.5) * 15}deg)
+            `;
+        });
+    </script>
+</body>
+</html> 

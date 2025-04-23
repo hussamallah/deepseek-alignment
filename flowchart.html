@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek System Flow</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            background: #1a1a1a;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .title {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+        }
+
+        .mermaid {
+            background: rgba(26, 26, 26, 0.7);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #3a0ca3;
+            box-shadow: 0 0 20px rgba(58, 12, 163, 0.3);
+        }
+
+        .legend {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(26, 26, 26, 0.7);
+            border: 2px solid #3a0ca3;
+            border-radius: 5px;
+            color: #ffffff;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-box {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">DEEP SEEK SYSTEM FLOW</h1>
+        <div class="mermaid">
+            flowchart TD
+                A[User Input] --> B{ArchetypeDetector.v5}
+                B -->|Lock Archetype| C[TruthBombSequencer.v3]
+                C --> D[EAS_Engine.v2]
+                D --> E[Biofeedback_UI]
+                E --> F[ChamberSystem.v1]
+                F --> G[DependencyMapper.v1]
+                G --> H((Complete Truth Extraction))
+                
+                style A fill:#f72585
+                style B fill:#6e00ff
+                style C fill:#f8961e
+                style D fill:#43aa8b
+                style E fill:#90be6d
+                style F fill:#577590
+                style G fill:#adb5bd
+                style H fill:#000,stroke:#fff
+        </div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="color-box" style="background: #f72585;"></div>
+                <span>User Input - Initial interaction point</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background: #6e00ff;"></div>
+                <span>ArchetypeDetector - Pattern recognition and analysis</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background: #f8961e;"></div>
+                <span>TruthBombSequencer - Truth processing and sequencing</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background: #43aa8b;"></div>
+                <span>EAS_Engine - Emotional Access Score management</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background: #90be6d;"></div>
+                <span>Biofeedback_UI - Real-time user feedback</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background: #577590;"></div>
+                <span>ChamberSystem - Truth chamber management</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background: #adb5bd;"></div>
+                <span>DependencyMapper - System dependency tracking</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background: #000; border: 2px solid #fff;"></div>
+                <span>Complete Truth Extraction - Final output</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html> 

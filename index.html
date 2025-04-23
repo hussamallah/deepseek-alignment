@@ -1,290 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARCHETYPE REVELATION</title>
-  <style>
-    :root {
-      --ball-color: #6e00ff;
-      --bg-color: #0a0a0a;
-      --text-color: #f0f0f0;
-      --border-color: #333;
-    }
-    
-    /* Archetype Colors */
-    .w7eaat-theme { --ball-color: #3a0ca3; }
-    .al7anoon-theme { --ball-color: #f72585; }
-    .zbarfucker-theme { --ball-color: #f8961e; }
-    .throbgod-theme { --ball-color: #43aa8b; }
-    .ashar-theme { --ball-color: #577590; }
-    .waraq-theme { --ball-color: #90be6d; }
-    .kalem-theme { --ball-color: #adb5bd; }
-    
-    body {
-      background: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Courier New', monospace;
-      text-align: center;
-      padding: 20px;
-      max-width: 600px;
-      margin: 0 auto;
-      transition: all 0.5s;
-    }
-    
-    .ball-container {
-      position: relative;
-      height: 120px;
-      margin: 30px auto;
-    }
-    
-    .truth-ball {
-      width: 80px;
-      height: 80px;
-      background: var(--ball-color);
-      border-radius: 50%;
-      margin: 0 auto;
-      box-shadow: 0 0 30px var(--ball-color);
-      transition: all 0.5s;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .sound-ball {
-      width: 15px;
-      height: 15px;
-      background: #ffff00;
-      border-radius: 50%;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      z-index: 1;
-      animation: bounce 1s infinite;
-    }
-    
-    @keyframes bounce {
-      0%, 100% { top: 0; opacity: 0; }
-      50% { top: 70px; opacity: 0.8; }
-    }
-    
-    .pulse {
-      animation: pulse 1.5s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); box-shadow: 0 0 50px var(--ball-color); }
-    }
-    
-    #question {
-      font-size: 1.2rem;
-      margin: 20px 0;
-      min-height: 60px;
-    }
-    
-    #userInput {
-      width: 100%;
-      padding: 12px;
-      background: #111;
-      color: #fff;
-      border: 1px solid var(--border-color);
-      margin: 10px 0;
-    }
-    
-    button {
-      background: transparent;
-      color: var(--text-color);
-      border: 2px solid var(--ball-color);
-      padding: 10px 25px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    button:hover {
-      background: var(--ball-color);
-      color: #000;
-    }
-    
-    .reveal-section {
-      display: none;
-      margin-top: 30px;
-      animation: fadeIn 1s;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    .chamber-entry {
-      font-size: 1.5rem;
-      margin: 20px 0;
-      color: var(--ball-color);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEP SEEK ALIGNMENT</title>
+    <script src="core.js"></script>
+    <script src="deepseek.js"></script>
+    <script src="archetype.js"></script>
+    <script src="eas.js"></script>
+    <script src="biofeedback.js"></script>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+        }
+
+        .ball {
+            width: 200px;
+            height: 200px;
+            background: #0ff;
+            border-radius: 50%;
+            margin: 2rem auto;
+            position: relative;
+            animation: pulse 2s infinite;
+            cursor: pointer;
+        }
+
+        .ball::before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background: #000;
+            border-radius: 50%;
+            top: 25%;
+            left: 25%;
+            animation: rotate 4s infinite linear;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input {
+            width: 100%;
+            background: #222;
+            border: 2px solid #0ff;
+            color: #fff;
+            padding: 1rem;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 10px #0ff;
+        }
+
+        .button {
+            width: 100%;
+            background: #0ff;
+            color: #000;
+            border: none;
+            padding: 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background: #fff;
+            box-shadow: 0 0 20px #0ff;
+        }
+
+        .progress {
+            margin-top: 1rem;
+            color: #0ff;
+            font-size: 1.2rem;
+        }
+
+        .status {
+            margin-top: 1rem;
+            color: #0f0;
+            font-size: 1rem;
+        }
+    </style>
 </head>
 <body>
-  <div class="ball-container">
-    <div class="sound-ball" id="soundBall"></div>
-    <div class="truth-ball pulse" id="truthBall"></div>
-  </div>
-  
-  <div id="question">What feeling dominates you most days?</div>
-  <input type="text" id="userInput" placeholder="Speak raw truth...">
-  <button onclick="processAnswer()">SUBMIT</button>
-  
-  <div class="reveal-section" id="revealSection">
-    <div class="chamber-entry">ENTERING <span id="archetypeTitle"></span> CHAMBER...</div>
-    <h2>YOUR ARCHETYPE: <span id="archetypeName"></span></h2>
-    <p id="archetypeDesc"></p>
-    <button onclick="enterChamber()">ENTER YOUR CHAMBER</button>
-  </div>
+    <div class="container">
+        <h1 class="title">DEEP SEEK ALIGNMENT</h1>
+        
+        <div class="question" id="question">
+            What is your deepest truth?
+        </div>
 
-  <!-- Sound elements (will work when hosted) -->
-  <audio id="w7eaatSound" src="sounds/deep-pulse.mp3"></audio>
-  <audio id="al7anoonSound" src="sounds/warm-heartbeat.mp3"></audio>
-  <!-- Add other archetype sounds -->
+        <div class="ball" id="ball"></div>
 
-  <script>
-    // Archetype Data
-    const archetypes = {
-      w7eaat: {
-        name: "W7EAAT",
-        title: "CONTROL CHAMBER",
-        desc: "The Controller. Your power comes from containment, but what are you really holding back?",
-        color: "#3a0ca3",
-        sound: "w7eaatSound"
-      },
-      al7anoon: {
-        name: "AL7ANOON",
-        title: "LOVE CHAMBER",
-        desc: "The Loved. You equate safety with affection, but who taught you that love means protection?",
-        color: "#f72585",
-        sound: "al7anoonSound"
-      },
-      // ... other archetypes ...
-    };
+        <input type="text" class="input" id="answer" placeholder="Type your answer...">
+        <button class="button" id="submit">SUBMIT</button>
+        <div class="progress" id="progress">Question 1 of 10</div>
+        <div class="status" id="status"></div>
+    </div>
 
-    // State
-    let currentAnswers = [];
-    let archetypeScores = {};
-    const questions = [
-      "What feeling dominates you most days?",
-      "What do you avoid thinking about?",
-      "Who has power over you?",
-      "What do you secretly crave?",
-      "What memory still haunts you?"
-    ];
-    let currentQuestion = 0;
+    <script>
+        // Initialize DeepSeek system
+        const deepseek = new DeepSeekSystem();
+        const archetypeDetector = new ArchetypeDetector();
+        const easEngine = new EAS_Engine();
+        const biofeedback = new Biofeedback_UI();
 
-    // Initialize
-    init();
+        const questions = [
+            "What is your deepest truth?",
+            "What are you most afraid of?",
+            "What do you truly desire?",
+            "What is your greatest strength?",
+            "What is your greatest weakness?",
+            "What is your purpose in life?",
+            "What is your greatest achievement?",
+            "What is your biggest regret?",
+            "What is your ideal future?",
+            "What is your core value?"
+        ];
 
-    function init() {
-      // Reset scores
-      Object.keys(archetypes).forEach(arch => {
-        archetypeScores[arch] = 0;
-      });
-      
-      // Start with first question
-      document.getElementById('question').textContent = questions[0];
-    }
+        const ball = document.getElementById('ball');
+        const question = document.getElementById('question');
+        const answer = document.getElementById('answer');
+        const submit = document.getElementById('submit');
+        const progress = document.getElementById('progress');
+        const status = document.getElementById('status');
+        let currentQuestion = 0;
+        let answers = [];
 
-    function processAnswer() {
-      const answer = document.getElementById('userInput').value.trim();
-      if (!answer) return;
-      
-      currentAnswers.push(answer);
-      analyzeAnswer(answer);
-      
-      if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        document.getElementById('question').textContent = questions[currentQuestion];
-        document.getElementById('userInput').value = '';
-      } else {
-        revealArchetype();
-      }
-    }
+        function changeBallColor() {
+            const colors = ['#0ff', '#f0f', '#0f0', '#ff0', '#f00'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            ball.style.background = randomColor;
+        }
 
-    function analyzeAnswer(answer) {
-      // Score against archetypes
-      Object.keys(archetypes).forEach(arch => {
-        const keywords = getKeywords(arch);
-        const matches = keywords.filter(word => 
-          answer.toLowerCase().includes(word)).length;
-        archetypeScores[arch] += matches * 10;
-      });
-      
-      updateBallReaction();
-    }
+        function updateStatus(message) {
+            status.textContent = message;
+            setTimeout(() => status.textContent = '', 3000);
+        }
 
-    function updateBallReaction() {
-      const archetype = getDominantArchetype();
-      const data = archetypes[archetype];
-      
-      // Visual update
-      document.getElementById('truthBall').style.background = data.color;
-      document.getElementById('truthBall').style.boxShadow = `0 0 30px ${data.color}`;
-      
-      // Sound indicator
-      const soundBall = document.getElementById('soundBall');
-      soundBall.style.display = 'block';
-      setTimeout(() => {
-        soundBall.style.display = 'none';
-      }, 1000);
-      
-      // Play sound (uncomment when sounds are uploaded)
-      // document.getElementById(data.sound).play();
-    }
+        function processAnswer(text) {
+            // Analyze answer with archetype detector
+            const archetype = archetypeDetector.analyze(text);
+            
+            // Update EAS score
+            easEngine.increaseScore(10);
+            
+            // Trigger biofeedback
+            biofeedback.triggerReaction('positive');
+            
+            // Store answer
+            answers.push({
+                question: questions[currentQuestion],
+                answer: text,
+                archetype: archetype,
+                timestamp: new Date().toISOString()
+            });
 
-    function revealArchetype() {
-      const archetype = getDominantArchetype();
-      const data = archetypes[archetype];
-      
-      // Apply theme
-      document.body.classList.add(`${archetype}-theme`);
-      
-      // Hide question UI
-      document.getElementById('question').style.display = 'none';
-      document.getElementById('userInput').style.display = 'none';
-      document.querySelector('button').style.display = 'none';
-      
-      // Show reveal
-      document.getElementById('archetypeTitle').textContent = data.title;
-      document.getElementById('archetypeName').textContent = data.name;
-      document.getElementById('archetypeDesc').textContent = data.desc;
-      document.getElementById('revealSection').style.display = 'block';
-      
-      // Final ball effect
-      const ball = document.getElementById('truthBall');
-      ball.classList.remove('pulse');
-      ball.style.transform = 'scale(1.3)';
-      ball.style.boxShadow = `0 0 50px ${data.color}`;
-    }
+            updateStatus(`Analyzing alignment...`);
+        }
 
-    function enterChamber() {
-      // Chamber logic would go here
-      alert(`Now entering ${getDominantArchetype().toUpperCase()} CHAMBER...`);
-    }
+        function determineChamber() {
+            // Get final archetype
+            const finalArchetype = archetypeDetector.getCurrentArchetype();
+            
+            // Get EAS score
+            const easScore = easEngine.getScore();
+            
+            // Determine chamber based on archetype and EAS
+            const chamber = deepseek.determineChamber(finalArchetype, easScore);
+            
+            // Add chamber-specific keywords for better alignment
+            const keywords = {
+                'al7anoon': ['love', 'heart', 'care', 'compassion', 'kindness'],
+                'w7eaat': ['control', 'power', 'order', 'discipline', 'authority'],
+                'balance': ['harmony', 'peace', 'equilibrium', 'balance', 'center'],
+                'kalem': ['logic', 'truth', 'writing', 'knowledge', 'wisdom', 'pen', 'ink'],
+                'waraq': ['memory', 'records', 'paper', 'scroll', 'archive', 'history'],
+                'ashar': ['transformation', 'change', 'fire', 'purify', 'evolve', 'ten'],
+                'throbgod': ['energy', 'vibration', 'frequency', 'rhythm', 'flow']
+            };
 
-    // Helper functions
-    function getDominantArchetype() {
-      return Object.entries(archetypeScores).reduce((a, b) => 
-        a[1] > b[1] ? a : b)[0];
-    }
+            // Count keyword matches
+            let maxMatches = 0;
+            let selectedChamber = chamber;
 
-    function getKeywords(archetype) {
-      // Return keywords for each archetype
-      const keywords = {
-        w7eaat: ["control", "fear", "obey", "silent"],
-        al7anoon: ["love", "safe", "warm", "care"],
-        // ... others ...
-      };
-      return keywords[archetype] || [];
-    }
-  </script>
+            for (const [key, words] of Object.entries(keywords)) {
+                let matches = 0;
+                answers.forEach(answer => {
+                    const text = answer.answer.toLowerCase();
+                    words.forEach(word => {
+                        if (text.includes(word)) {
+                            matches++;
+                        }
+                    });
+                });
+
+                if (matches > maxMatches) {
+                    maxMatches = matches;
+                    selectedChamber = {
+                        name: key.toUpperCase(),
+                        url: `${key}.html`
+                    };
+                }
+            }
+
+            return selectedChamber;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length) {
+                question.textContent = questions[currentQuestion];
+                progress.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+                answer.value = '';
+            } else {
+                const chamber = determineChamber();
+                updateStatus(`Alignment complete! Redirecting to ${chamber.name}...`);
+                setTimeout(() => {
+                    window.location.href = chamber.url;
+                }, 2000);
+            }
+        }
+
+        ball.addEventListener('click', () => {
+            changeBallColor();
+            biofeedback.triggerReaction('neutral');
+        });
+
+        submit.addEventListener('click', () => {
+            if (answer.value.trim()) {
+                processAnswer(answer.value);
+                currentQuestion++;
+                nextQuestion();
+            }
+        });
+
+        // Initialize
+        setInterval(changeBallColor, 3000);
+        nextQuestion();
+
+        // Connect to DeepSeek system
+        deepseek.initialize();
+        updateStatus('DeepSeek system connected');
+    </script>
 </body>
 </html> 
