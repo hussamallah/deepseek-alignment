@@ -188,31 +188,68 @@
             setTimeout(() => status.textContent = '', 3000);
         }
 
-        function processAnswer(text) {
+        async function processAnswer(text) {
             if (!text.trim()) {
                 updateStatus('Please enter a response');
                 return false;
             }
 
-            // Analyze answer with archetype detector
-            const archetype = archetypeDetector.analyze(text);
-            
-            // Update EAS score
-            easEngine.increaseScore(10);
-            
-            // Trigger biofeedback
-            biofeedback.triggerReaction('positive');
-            
-            // Store answer
-            answers.push({
-                question: questions[currentQuestion],
-                answer: text,
-                archetype: archetype,
-                timestamp: new Date().toISOString()
-            });
+            try {
+                const response = await fetch('http://localhost:5000/process_truth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text })
+                });
 
-            updateStatus(`Answer recorded. Processing...`);
-            return true;
+                const result = await response.json();
+                
+                if (result.status === 'error') {
+                    updateStatus(result.message);
+                    return false;
+                }
+
+                // Update UI with backend response
+                updateStatus(result.message);
+                
+                // Store answer with enhanced data from backend
+                answers.push({
+                    question: questions[currentQuestion],
+                    answer: text,
+                    archetype: result.data.archetype,
+                    eas_score: result.data.eas_score,
+                    chamber_state: result.data.chamber_state,
+                    timestamp: new Date().toISOString()
+                });
+
+                return true;
+            } catch (error) {
+                console.error('Error:', error);
+                updateStatus('Error processing answer. Please try again.');
+                return false;
+            }
+        }
+
+        async function getCurrentState() {
+            try {
+                const response = await fetch('http://localhost:5000/get_state');
+                const state = await response.json();
+                
+                // Update UI with current state
+                if (state.eas_score) {
+                    progress.textContent = `EAS Score: ${state.eas_score}`;
+                }
+                
+                if (state.archetype) {
+                    status.textContent = `Current Archetype: ${state.archetype}`;
+                }
+                
+                return state;
+            } catch (error) {
+                console.error('Error:', error);
+                return null;
+            }
         }
 
         function determineChamber() {
@@ -282,13 +319,13 @@
         }
 
         // Event Listeners
-        answerForm.addEventListener('submit', (e) => {
+        answerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const answerText = answer.value.trim();
-            if (processAnswer(answerText)) {
+            if (await processAnswer(answerText)) {
                 setTimeout(() => {
                     nextQuestion();
-                }, 1000); // Add small delay for better UX
+                }, 1000);
             }
         });
 
@@ -298,6 +335,9 @@
         question.textContent = questions[0];
         progress.textContent = `Question 1 of ${questions.length}`;
         answer.focus();
+
+        // Get initial state
+        getCurrentState();
 
         // Connect to DeepSeek system
         deepseek.initialize();
