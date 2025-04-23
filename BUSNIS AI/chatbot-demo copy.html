@@ -61,47 +61,25 @@
             opacity: 0.9;
         }
 
-        .progress-container {
-            padding: 10px 20px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #eee;
-            display: none;
-        }
-
-        .progress-bar {
-            height: 4px;
-            background-color: #eee;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            background-color: var(--primary-color);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .progress-steps {
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
+            align-items: center;
+            gap: 5px;
             font-size: 12px;
-            color: #666;
         }
 
-        .step {
-            text-align: center;
-            flex: 1;
-        }
-
-        .step.active {
-            color: var(--primary-color);
-            font-weight: bold;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success-color);
         }
 
         .chat-container {
-            height: 400px;
+            height: 500px;
             padding: 20px;
             overflow-y: auto;
             display: flex;
@@ -167,6 +145,7 @@
             border-top: 1px solid #eee;
             display: flex;
             gap: 10px;
+            position: relative;
         }
 
         input[type="text"] {
@@ -198,6 +177,15 @@
             background-color: var(--secondary-color);
         }
 
+        .disclaimer {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+
         .suggestions {
             display: flex;
             flex-wrap: wrap;
@@ -222,13 +210,69 @@
             transform: translateY(-2px);
         }
 
-        .disclaimer {
-            padding: 15px;
+        .message-time {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-button {
+            padding: 4px 8px;
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .feedback-container {
+            display: none;
+            padding: 10px;
             background-color: #f8f9fa;
             border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #666;
-            text-align: center;
+        }
+
+        .feedback-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .feedback-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .feedback-button.positive {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .feedback-button.neutral {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .feedback-button.negative {
+            background-color: var(--error-color);
+            color: white;
         }
 
         @media (max-width: 600px) {
@@ -257,32 +301,41 @@
         <div class="header">
             <h1>Customer Service Assistant</h1>
             <p>How can I help you today?</p>
-        </div>
-
-        <div class="progress-container" style="display: block;">
-            <div class="progress-bar">
-                <div class="progress" id="question-progress"></div>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span>Online</span>
             </div>
-            <div id="question-counter">Question 1 of 10</div>
         </div>
         
         <div class="suggestions">
-            <div class="suggestion" onclick="startFlow('refund')">Request a Refund</div>
-            <div class="suggestion" onclick="startFlow('billing')">Billing Question</div>
-            <div class="suggestion" onclick="startFlow('product_info')">Product Information</div>
+            <div class="suggestion" onclick="sendSuggestion('I need help with a refund')">Refund Help</div>
+            <div class="suggestion" onclick="sendSuggestion('I have a billing question')">Billing Question</div>
+            <div class="suggestion" onclick="sendSuggestion('Tell me about your products')">Product Info</div>
+            <div class="suggestion" onclick="sendSuggestion('I need technical support')">Tech Support</div>
+            <div class="suggestion" onclick="sendSuggestion('Where is my order?')">Order Status</div>
+            <div class="suggestion" onclick="sendSuggestion('I want to give feedback')">Feedback</div>
         </div>
 
         <div class="chat-container" id="chatContainer">
             <div class="message bot-message">
                 Hello! I'm your customer service assistant. How can I help you today? 
-                I can assist with refunds, billing, or product information.
+                I can assist with refunds, billing, product information, technical support, or order status.
+                <div class="message-time" id="initialMessageTime"></div>
             </div>
         </div>
 
-        <form id="chatForm" class="input-container">
-            <input type="text" id="userInput" placeholder="Type your message here..." autocomplete="off" required>
-            <button type="submit">Send</button>
-        </form>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Type your message here..." autocomplete="off">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+
+        <div class="feedback-container" id="feedbackContainer">
+            <div class="feedback-options">
+                <button class="feedback-button positive" onclick="submitFeedback('positive')">Helpful</button>
+                <button class="feedback-button neutral" onclick="submitFeedback('neutral')">Neutral</button>
+                <button class="feedback-button negative" onclick="submitFeedback('negative')">Not Helpful</button>
+            </div>
+        </div>
 
         <div class="disclaimer">
             This is a demo chatbot. All interactions are for demonstration purposes only.
@@ -290,48 +343,56 @@
         </div>
     </div>
 
-    <div id="completion-message" style="display: none; text-align: center; padding: 20px;">
-        <h2>Deep Seek Analysis Complete</h2>
-        <p>Thank you for sharing your truths. Your alignment has been recorded.</p>
-    </div>
-
     <script src="chatbot.js"></script>
     <script>
         const bot = new CustomerServiceBot();
         const chatContainer = document.getElementById('chatContainer');
-        const chatForm = document.getElementById('chatForm');
         const userInput = document.getElementById('userInput');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const progressSteps = document.getElementById('progressSteps');
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        const initialMessageTime = document.getElementById('initialMessageTime');
 
-        function updateProgress(flow, step) {
-            if (!flow) {
-                progressContainer.style.display = 'none';
-                return;
-            }
-
-            progressContainer.style.display = 'block';
-            const totalSteps = bot.flows[flow].steps.length;
-            const progress = ((step + 1) / totalSteps) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            // Update progress steps
-            progressSteps.innerHTML = '';
-            bot.flows[flow].steps.forEach((step, index) => {
-                const stepDiv = document.createElement('div');
-                stepDiv.className = `step ${index <= step ? 'active' : ''}`;
-                stepDiv.textContent = `Step ${index + 1}`;
-                progressSteps.appendChild(stepDiv);
-            });
-        }
+        // Set initial message time
+        initialMessageTime.textContent = new Date().toLocaleTimeString();
 
         function addMessage(message, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = message;
+            
+            const messageContent = document.createElement('div');
+            messageContent.textContent = message;
+            messageDiv.appendChild(messageContent);
+
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = new Date().toLocaleTimeString();
+            messageDiv.appendChild(timeDiv);
+
+            if (!isUser) {
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'message-actions';
+                
+                const copyButton = document.createElement('button');
+                copyButton.className = 'action-button';
+                copyButton.textContent = 'Copy';
+                copyButton.onclick = () => {
+                    navigator.clipboard.writeText(message);
+                    copyButton.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyButton.textContent = 'Copy';
+                    }, 2000);
+                };
+                
+                actionsDiv.appendChild(copyButton);
+                messageDiv.appendChild(actionsDiv);
+            }
+
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Show feedback options after bot message
+            if (!isUser) {
+                feedbackContainer.style.display = 'block';
+            }
         }
 
         function showTypingIndicator() {
@@ -347,11 +408,6 @@
             indicator.remove();
         }
 
-        function startFlow(flowType) {
-            userInput.value = flowType;
-            sendMessage();
-        }
-
         async function sendMessage() {
             const message = userInput.value.trim();
             if (message) {
@@ -365,24 +421,28 @@
                     removeTypingIndicator(typingIndicator);
                     const response = bot.respond(message);
                     addMessage(response);
-
-                    // Update progress
-                    const state = bot.getConversationState();
-                    updateProgress(state.currentFlow, state.flowStep);
                 }, 1000);
             }
         }
 
-        // Form submission handler
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        function sendSuggestion(text) {
+            userInput.value = text;
             sendMessage();
-        });
+        }
 
-        // Enter key handler
+        function submitFeedback(type) {
+            const feedbackMessages = {
+                positive: "Thank you for your positive feedback!",
+                neutral: "Thank you for your feedback.",
+                negative: "I'm sorry I couldn't help better. A support agent will contact you shortly."
+            };
+            
+            addMessage(feedbackMessages[type], true);
+            feedbackContainer.style.display = 'none';
+        }
+
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                e.preventDefault();
                 sendMessage();
             }
         });

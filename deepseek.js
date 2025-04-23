@@ -240,6 +240,11 @@ class DeepSeekSystem {
         this.easEngine = new EAS_Engine();
         this.biofeedback = new Biofeedback_UI();
         
+        // Question tracking
+        this.currentQuestion = 1;
+        this.totalQuestions = 10;
+        this.questionHistory = new Set();
+        
         // Integration Points
         this.initializeIntegration();
     }
@@ -295,13 +300,38 @@ class DeepSeekSystem {
         });
     }
 
+    submitTruth(truth) {
+        if (!this.truthValidator.validate(truth)) {
+            this.biofeedback.trigger('negative');
+            return {
+                success: false,
+                message: "Please provide a valid truth response.",
+                questionNumber: this.currentQuestion
+            };
+        }
+
+        // Store the truth and increment question counter
+        this.truths.push(truth);
+        this.questionHistory.add(this.currentQuestion);
+        
+        if (this.currentQuestion < this.totalQuestions) {
+            this.currentQuestion++;
+        }
+
+        return {
+            success: true,
+            message: "Truth accepted.",
+            questionNumber: this.currentQuestion,
+            isComplete: this.currentQuestion > this.totalQuestions
+        };
+    }
+
     getCurrentState() {
         return {
-            score: this.easEngine.getScore(),
-            archetype: this.archetypeDetector.getCurrent(),
-            unlockedChambers: this.chamberSystem.getChamberState().unlockedChambers,
-            dailyCount: this.chamberSystem.dailyCount,
-            interrogationLevel: this.chamberSystem.chamberState.interrogationLevel
+            currentQuestion: this.currentQuestion,
+            totalQuestions: this.totalQuestions,
+            progress: (this.currentQuestion - 1) / this.totalQuestions * 100,
+            isComplete: this.currentQuestion > this.totalQuestions
         };
     }
 
@@ -312,4 +342,33 @@ class DeepSeekSystem {
 
 // Export the DeepSeek system
 const deepSeek = new DeepSeekSystem();
-export default deepSeek; 
+export default deepSeek;
+
+// Update the HTML to show progress
+document.addEventListener('DOMContentLoaded', () => {
+    const deepSeek = new DeepSeekSystem();
+    const form = document.querySelector('form');
+    const questionCounter = document.querySelector('#question-counter');
+    
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = form.querySelector('input[type="text"]');
+        const truth = input.value.trim();
+        
+        if (!truth) return;
+        
+        const result = await deepSeek.submitTruth(truth);
+        
+        if (result.success) {
+            // Update question counter
+            questionCounter.textContent = `Question ${result.questionNumber} of ${deepSeek.totalQuestions}`;
+            input.value = '';
+            
+            if (result.isComplete) {
+                // Handle completion
+                form.style.display = 'none';
+                document.querySelector('#completion-message').style.display = 'block';
+            }
+        }
+    });
+}); 

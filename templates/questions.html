@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <title>DeepSeek – Alignment</title>
+    <style>
+        body {
+            background: #111;
+            color: #0ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            text-align: center;
+        }
+        #q-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #222;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #0ff;
+        }
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px #0ff;
+        }
+        input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #333;
+            border: 2px solid #0ff;
+            color: #fff;
+            font-size: 1.2rem;
+            border-radius: 5px;
+        }
+        button {
+            background: #0ff;
+            color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #fff;
+            box-shadow: 0 0 20px #0ff;
+        }
+        .progress {
+            margin-top: 1rem;
+            color: #0ff;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="q-container"></div>
+    <div class="progress" id="progress"></div>
+    <script>
+        const questions = {{ questions|tojson }};
+        let idx = 0, answers = [];
+
+        function show() {
+            if (idx >= questions.length) {
+                fetch('/detect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answers })
+                })
+                .then(r => r.json())
+                .then(j => window.location = '/chamber/' + j.archetype);
+                return;
+            }
+
+            document.getElementById('q-container').innerHTML = `
+                <p>${questions[idx]}</p>
+                <input id="ans" placeholder="Type your answer..." />
+                <button onclick="next()">Next</button>
+            `;
+            document.getElementById('progress').innerText = `Question ${idx + 1} of ${questions.length}`;
+            document.getElementById('ans').focus();
+        }
+
+        function next() {
+            const v = document.getElementById('ans').value.trim();
+            if (!v) return alert('Please enter an answer');
+            answers.push(v);
+            idx++;
+            show();
+        }
+
+        // Handle Enter key
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                next();
+            }
+        });
+
+        show();
+    </script>
+</body>
+</html> 
