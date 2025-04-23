@@ -270,12 +270,14 @@
                 progress.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
                 answer.value = '';
                 answer.focus();
+                return true;
             } else {
                 const chamber = determineChamber();
                 updateStatus(`Alignment complete! Redirecting to ${chamber.name}...`);
                 setTimeout(() => {
                     window.location.href = chamber.url;
                 }, 2000);
+                return false;
             }
         }
 
@@ -284,7 +286,9 @@
             e.preventDefault();
             const answerText = answer.value.trim();
             if (processAnswer(answerText)) {
-                nextQuestion();
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1000); // Add small delay for better UX
             }
         });
 
