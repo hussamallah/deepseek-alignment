@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>{{ title }}</title>
+    <title>Deep Seek Alignment</title>
     <style>
         body {
             background: #000;
@@ -16,10 +16,25 @@
             margin-bottom: 2rem;
             text-shadow: 0 0 10px #0ff;
         }
-        #step {
+        .question-counter {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: #0ff;
+            text-shadow: 0 0 5px #0ff;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #222;
+            margin-bottom: 1rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background: #0ff;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px #0ff;
         }
         input {
             width: 100%;
@@ -60,46 +75,125 @@
             border-radius: 10px;
             box-shadow: 0 0 20px #0ff;
         }
+        .user-info {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #222;
+            border-radius: 5px;
+            border: 1px solid #0ff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>{{ title }}</h1>
-        <div id="step">Step 1</div>
-        <input id="text" placeholder="Type your response..." />
-        <button onclick="send()">Submit</button>
+        <h1>Deep Seek Alignment</h1>
+        <div id="userInfo" class="user-info" style="display: none;">
+            <div>User: <span id="userName"></span></div>
+            <div>Session: <span id="sessionId"></span></div>
+        </div>
+        <div class="question-counter" id="questionCounter">Question 1 of 10</div>
+        <div class="progress-bar">
+            <div class="progress" id="progressBar" style="width: 0%"></div>
+        </div>
+        <div id="questionText">What is your deepest truth?</div>
+        <input id="answerInput" type="text" placeholder="Enter your truth..." required />
+        <button onclick="submitAnswer()">Submit</button>
         <div id="reaction"></div>
     </div>
-    <script>
-        let step = 1;
-        let eas = 50;
 
-        function send() {
-            const answer = document.getElementById('text').value.trim();
-            if (!answer) return alert('Please enter a response');
+    <script type="module">
+        import questionManager from '../deepseek-questions.js';
+        import dataCenter from '../data_center.js';
 
-            fetch('/biofeedback', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ step, answer })
-            })
-            .then(r => r.json())
-            .then(j => {
-                document.getElementById('reaction').innerText = j.reaction;
-                eas = j.eas;
-                step++;
-                document.getElementById('step').innerText = `Step ${step}`;
-                document.getElementById('text').value = '';
-                document.getElementById('text').focus();
-            });
+        // Initialize user session
+        let userId = localStorage.getItem('deepseek_userId');
+        if (!userId) {
+            const userName = prompt('Please enter your name to begin:');
+            if (userName) {
+                userId = dataCenter.registerUser(userName);
+                localStorage.setItem('deepseek_userId', userId);
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('userName').textContent = userName;
+                document.getElementById('sessionId').textContent = userId;
+            }
+        } else {
+            const user = dataCenter.users.get(userId);
+            if (user) {
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('userName').textContent = user.name;
+                document.getElementById('sessionId').textContent = userId;
+            }
         }
 
+        function updateProgress() {
+            const progress = questionManager.getProgress();
+            document.getElementById('progressBar').style.width = `${progress.percentage}%`;
+            document.getElementById('questionCounter').textContent = 
+                `Question ${progress.current} of ${progress.total}`;
+            document.getElementById('questionText').textContent = questionManager.getCurrentQuestion().text;
+        }
+
+        window.submitAnswer = async function() {
+            const answerInput = document.getElementById('answerInput');
+            const answer = answerInput.value.trim();
+            
+            if (!answer) {
+                alert('Please enter your answer');
+                return;
+            }
+
+            if (!userId) {
+                alert('Please enter your name to begin');
+                return;
+            }
+
+            try {
+                // Submit answer to question manager
+                const result = questionManager.submitAnswer(answer);
+                
+                if (result.success) {
+                    // Save answer to data center
+                    dataCenter.saveAnswer(userId, result.currentQuestion, answer);
+
+                    // Update UI
+                    updateProgress();
+                    answerInput.value = '';
+                    answerInput.focus();
+
+                    // Show reaction
+                    document.getElementById('reaction').textContent = result.message;
+
+                    // If completed all questions
+                    if (result.isComplete) {
+                        document.querySelector('.container').innerHTML = `
+                            <h1>Alignment Complete</h1>
+                            <div class="user-info">
+                                <div>User: <span id="userName">${dataCenter.users.get(userId).name}</span></div>
+                                <div>Session: <span id="sessionId">${userId}</span></div>
+                            </div>
+                            <div style="margin: 2rem 0;">
+                                Your answers have been saved to the data center.
+                            </div>
+                            <button onclick="location.reload()">Start New Session</button>
+                        `;
+                    }
+                } else {
+                    document.getElementById('reaction').textContent = result.message;
+                }
+            } catch (error) {
+                document.getElementById('reaction').textContent = 'Error saving answer: ' + error.message;
+            }
+        };
+
         // Handle Enter key
-        document.addEventListener('keypress', function(e) {
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                send();
+                submitAnswer();
             }
         });
+
+        // Initialize progress
+        updateProgress();
     </script>
 </body>
 </html> 
