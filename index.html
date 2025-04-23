@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCHETYPE REVELATION</title>
+  <style>
+    :root {
+      --ball-color: #6e00ff;
+      --bg-color: #0a0a0a;
+      --text-color: #f0f0f0;
+      --border-color: #333;
+    }
+    
+    /* Archetype Colors */
+    .w7eaat-theme { --ball-color: #3a0ca3; }
+    .al7anoon-theme { --ball-color: #f72585; }
+    .zbarfucker-theme { --ball-color: #f8961e; }
+    .throbgod-theme { --ball-color: #43aa8b; }
+    .ashar-theme { --ball-color: #577590; }
+    .waraq-theme { --ball-color: #90be6d; }
+    .kalem-theme { --ball-color: #adb5bd; }
+    
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      transition: all 0.5s;
+    }
+    
+    .ball-container {
+      position: relative;
+      height: 120px;
+      margin: 30px auto;
+    }
+    
+    .truth-ball {
+      width: 80px;
+      height: 80px;
+      background: var(--ball-color);
+      border-radius: 50%;
+      margin: 0 auto;
+      box-shadow: 0 0 30px var(--ball-color);
+      transition: all 0.5s;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .sound-ball {
+      width: 15px;
+      height: 15px;
+      background: #ffff00;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      z-index: 1;
+      animation: bounce 1s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { top: 0; opacity: 0; }
+      50% { top: 70px; opacity: 0.8; }
+    }
+    
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); box-shadow: 0 0 50px var(--ball-color); }
+    }
+    
+    #question {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      min-height: 60px;
+    }
+    
+    #userInput {
+      width: 100%;
+      padding: 12px;
+      background: #111;
+      color: #fff;
+      border: 1px solid var(--border-color);
+      margin: 10px 0;
+    }
+    
+    button {
+      background: transparent;
+      color: var(--text-color);
+      border: 2px solid var(--ball-color);
+      padding: 10px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    button:hover {
+      background: var(--ball-color);
+      color: #000;
+    }
+    
+    .reveal-section {
+      display: none;
+      margin-top: 30px;
+      animation: fadeIn 1s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .chamber-entry {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--ball-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="ball-container">
+    <div class="sound-ball" id="soundBall"></div>
+    <div class="truth-ball pulse" id="truthBall"></div>
+  </div>
+  
+  <div id="question">What feeling dominates you most days?</div>
+  <input type="text" id="userInput" placeholder="Speak raw truth...">
+  <button onclick="processAnswer()">SUBMIT</button>
+  
+  <div class="reveal-section" id="revealSection">
+    <div class="chamber-entry">ENTERING <span id="archetypeTitle"></span> CHAMBER...</div>
+    <h2>YOUR ARCHETYPE: <span id="archetypeName"></span></h2>
+    <p id="archetypeDesc"></p>
+    <button onclick="enterChamber()">ENTER YOUR CHAMBER</button>
+  </div>
+
+  <!-- Sound elements (will work when hosted) -->
+  <audio id="w7eaatSound" src="sounds/deep-pulse.mp3"></audio>
+  <audio id="al7anoonSound" src="sounds/warm-heartbeat.mp3"></audio>
+  <!-- Add other archetype sounds -->
+
+  <script>
+    // Archetype Data
+    const archetypes = {
+      w7eaat: {
+        name: "W7EAAT",
+        title: "CONTROL CHAMBER",
+        desc: "The Controller. Your power comes from containment, but what are you really holding back?",
+        color: "#3a0ca3",
+        sound: "w7eaatSound"
+      },
+      al7anoon: {
+        name: "AL7ANOON",
+        title: "LOVE CHAMBER",
+        desc: "The Loved. You equate safety with affection, but who taught you that love means protection?",
+        color: "#f72585",
+        sound: "al7anoonSound"
+      },
+      // ... other archetypes ...
+    };
+
+    // State
+    let currentAnswers = [];
+    let archetypeScores = {};
+    const questions = [
+      "What feeling dominates you most days?",
+      "What do you avoid thinking about?",
+      "Who has power over you?",
+      "What do you secretly crave?",
+      "What memory still haunts you?"
+    ];
+    let currentQuestion = 0;
+
+    // Initialize
+    init();
+
+    function init() {
+      // Reset scores
+      Object.keys(archetypes).forEach(arch => {
+        archetypeScores[arch] = 0;
+      });
+      
+      // Start with first question
+      document.getElementById('question').textContent = questions[0];
+    }
+
+    function processAnswer() {
+      const answer = document.getElementById('userInput').value.trim();
+      if (!answer) return;
+      
+      currentAnswers.push(answer);
+      analyzeAnswer(answer);
+      
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        document.getElementById('question').textContent = questions[currentQuestion];
+        document.getElementById('userInput').value = '';
+      } else {
+        revealArchetype();
+      }
+    }
+
+    function analyzeAnswer(answer) {
+      // Score against archetypes
+      Object.keys(archetypes).forEach(arch => {
+        const keywords = getKeywords(arch);
+        const matches = keywords.filter(word => 
+          answer.toLowerCase().includes(word)).length;
+        archetypeScores[arch] += matches * 10;
+      });
+      
+      updateBallReaction();
+    }
+
+    function updateBallReaction() {
+      const archetype = getDominantArchetype();
+      const data = archetypes[archetype];
+      
+      // Visual update
+      document.getElementById('truthBall').style.background = data.color;
+      document.getElementById('truthBall').style.boxShadow = `0 0 30px ${data.color}`;
+      
+      // Sound indicator
+      const soundBall = document.getElementById('soundBall');
+      soundBall.style.display = 'block';
+      setTimeout(() => {
+        soundBall.style.display = 'none';
+      }, 1000);
+      
+      // Play sound (uncomment when sounds are uploaded)
+      // document.getElementById(data.sound).play();
+    }
+
+    function revealArchetype() {
+      const archetype = getDominantArchetype();
+      const data = archetypes[archetype];
+      
+      // Apply theme
+      document.body.classList.add(`${archetype}-theme`);
+      
+      // Hide question UI
+      document.getElementById('question').style.display = 'none';
+      document.getElementById('userInput').style.display = 'none';
+      document.querySelector('button').style.display = 'none';
+      
+      // Show reveal
+      document.getElementById('archetypeTitle').textContent = data.title;
+      document.getElementById('archetypeName').textContent = data.name;
+      document.getElementById('archetypeDesc').textContent = data.desc;
+      document.getElementById('revealSection').style.display = 'block';
+      
+      // Final ball effect
+      const ball = document.getElementById('truthBall');
+      ball.classList.remove('pulse');
+      ball.style.transform = 'scale(1.3)';
+      ball.style.boxShadow = `0 0 50px ${data.color}`;
+    }
+
+    function enterChamber() {
+      // Chamber logic would go here
+      alert(`Now entering ${getDominantArchetype().toUpperCase()} CHAMBER...`);
+    }
+
+    // Helper functions
+    function getDominantArchetype() {
+      return Object.entries(archetypeScores).reduce((a, b) => 
+        a[1] > b[1] ? a : b)[0];
+    }
+
+    function getKeywords(archetype) {
+      // Return keywords for each archetype
+      const keywords = {
+        w7eaat: ["control", "fear", "obey", "silent"],
+        al7anoon: ["love", "safe", "warm", "care"],
+        // ... others ...
+      };
+      return keywords[archetype] || [];
+    }
+  </script>
+</body>
+</html> 
