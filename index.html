@@ -179,6 +179,11 @@
         }
 
         function processAnswer(text) {
+            if (!text.trim()) {
+                updateStatus('Please enter a response');
+                return false;
+            }
+
             // Analyze answer with archetype detector
             const archetype = archetypeDetector.analyze(text);
             
@@ -196,7 +201,8 @@
                 timestamp: new Date().toISOString()
             });
 
-            updateStatus(`Analyzing alignment...`);
+            updateStatus(`Answer recorded. Processing...`);
+            return true;
         }
 
         function determineChamber() {
@@ -248,10 +254,12 @@
         }
 
         function nextQuestion() {
-            if (currentQuestion < questions.length) {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
                 question.textContent = questions[currentQuestion];
                 progress.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
                 answer.value = '';
+                answer.focus();
             } else {
                 const chamber = determineChamber();
                 updateStatus(`Alignment complete! Redirecting to ${chamber.name}...`);
@@ -267,16 +275,25 @@
         });
 
         submit.addEventListener('click', () => {
-            if (answer.value.trim()) {
-                processAnswer(answer.value);
-                currentQuestion++;
+            const answerText = answer.value.trim();
+            if (processAnswer(answerText)) {
                 nextQuestion();
             }
         });
 
+        answer.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const answerText = answer.value.trim();
+                if (processAnswer(answerText)) {
+                    nextQuestion();
+                }
+            }
+        });
+
         // Initialize
-        setInterval(changeBallColor, 3000);
-        nextQuestion();
+        question.textContent = questions[0];
+        progress.textContent = `Question 1 of ${questions.length}`;
+        answer.focus();
 
         // Connect to DeepSeek system
         deepseek.initialize();
