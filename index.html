@@ -130,10 +130,12 @@
             What is your deepest truth?
         </div>
 
-        <div class="ball" id="ball" onclick="window.location.href='demo.html'"></div>
+        <div class="ball" id="ball"></div>
 
-        <input type="text" class="input" id="answer" placeholder="Type your answer...">
-        <button class="button" id="submit">SUBMIT</button>
+        <form id="answerForm" onsubmit="return false;">
+            <input type="text" class="input" id="answer" placeholder="Type your answer...">
+            <button type="submit" class="button" id="submit">SUBMIT</button>
+        </form>
         <div class="progress" id="progress">Question 1 of 10</div>
         <div class="status" id="status"></div>
     </div>
@@ -160,6 +162,7 @@
 
         const ball = document.getElementById('ball');
         const question = document.getElementById('question');
+        const answerForm = document.getElementById('answerForm');
         const answer = document.getElementById('answer');
         const submit = document.getElementById('submit');
         const progress = document.getElementById('progress');
@@ -269,26 +272,17 @@
             }
         }
 
-        ball.addEventListener('click', () => {
-            changeBallColor();
-            biofeedback.triggerReaction('neutral');
-        });
-
-        submit.addEventListener('click', () => {
+        function handleSubmit(e) {
+            e.preventDefault();
             const answerText = answer.value.trim();
             if (processAnswer(answerText)) {
                 nextQuestion();
             }
-        });
+        }
 
-        answer.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const answerText = answer.value.trim();
-                if (processAnswer(answerText)) {
-                    nextQuestion();
-                }
-            }
-        });
+        // Event Listeners
+        answerForm.addEventListener('submit', handleSubmit);
+        ball.addEventListener('click', changeBallColor);
 
         // Initialize
         question.textContent = questions[0];
