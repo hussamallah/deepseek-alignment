@@ -244,7 +244,8 @@
         const reaction = document.getElementById('reaction');
 
         // Show first question
-        questionText.textContent = `Step ${questionIndex + 1}: ${questionManager.getCurrentQuestion().text}`;
+        const firstQuestion = questionManager.getCurrentQuestion();
+        questionText.textContent = `Step ${firstQuestion.number}: ${firstQuestion.text}`;
         questionText.classList.add('fade-in');
 
         window.submitAnswer = async function() {
@@ -276,10 +277,12 @@
             dataCenter.setEASScore(newEASScore);
             uiManager.updateEASBar(newEASScore);
 
+            // Submit answer to question manager
+            const result = questionManager.submitAnswer(answer);
+            
             // Wait 5 seconds before transitioning
             setTimeout(() => {
-                questionIndex++;
-                const isFinal = questionIndex >= totalSteps;
+                const isFinal = result.isComplete;
 
                 // Fade out current question
                 questionText.classList.remove('fade-in');
@@ -287,8 +290,8 @@
 
                 setTimeout(() => {
                     if (!isFinal) {
-                        // Update to next question
-                        questionText.textContent = `Step ${questionIndex + 1}: ${questionManager.getCurrentQuestion().text}`;
+                        // Update to next question using question manager's result
+                        questionText.textContent = `Step ${result.currentQuestion}: ${result.nextQuestion}`;
                         updateProgress();
                     } else {
                         // Show completion screen
@@ -317,8 +320,8 @@
         };
 
         function updateProgress() {
-            const progress = (questionIndex / totalSteps) * 100;
-            progressBar.style.width = `${progress}%`;
+            const progress = questionManager.getProgress();
+            progressBar.style.width = `${progress.percentage}%`;
         }
     </script>
 </body>
