@@ -3,345 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEEP SEEK ALIGNMENT</title>
-    <base href="/deepseek-alignment/">
-    <script src="https://hussamallah.github.io/deepseek-alignment/core.js"></script>
-    <script src="https://hussamallah.github.io/deepseek-alignment/deepseek.js"></script>
-    <script src="https://hussamallah.github.io/deepseek-alignment/archetype.js"></script>
-    <script src="https://hussamallah.github.io/deepseek-alignment/eas.js"></script>
-    <script src="https://hussamallah.github.io/deepseek-alignment/biofeedback.js"></script>
+    <title>DeepSeek Alignment</title>
     <style>
-        :root {
-            --primary-color: #0ff;
-            --text-color: #fff;
-            --background-color: #000;
-        }
-
-        * {
-            box-sizing: border-box;
+        body {
             margin: 0;
             padding: 0;
-        }
-
-        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            background-color: #1e272e;
+            color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
             padding: 2rem;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .title {
-            font-size: 2.5rem;
+        h1 {
+            color: #00a8ff;
             margin-bottom: 2rem;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-color);
         }
-
-        .ball {
-            width: 200px;
-            height: 200px;
-            background: #0ff;
-            border-radius: 50%;
-            margin: 2rem auto;
-            position: relative;
-            animation: pulse 2s infinite;
-            cursor: pointer;
-        }
-
-        .ball::before {
-            content: '';
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            background: #000;
-            border-radius: 50%;
-            top: 25%;
-            left: 25%;
-            animation: rotate 4s infinite linear;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .question {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
-            text-shadow: 0 0 5px var(--primary-color);
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .input {
-            width: 100%;
-            background: #222;
-            border: 2px solid var(--primary-color);
-            color: var(--text-color);
-            padding: 1rem;
+        .start-button {
+            padding: 1rem 2rem;
             font-size: 1.2rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 0 10px var(--primary-color);
-        }
-
-        .button {
-            width: 100%;
-            background: var(--primary-color);
-            color: #000;
+            background-color: #00a8ff;
+            color: white;
             border: none;
-            padding: 1rem;
-            font-size: 1.2rem;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
-        .button:hover {
-            background: #fff;
-            box-shadow: 0 0 20px var(--primary-color);
-        }
-
-        .progress {
-            margin-top: 1rem;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-        }
-
-        .status {
-            margin-top: 1rem;
-            color: #0f0;
-            font-size: 1rem;
+        .start-button:hover {
+            background-color: #0097e6;
+            box-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">DEEP SEEK ALIGNMENT</h1>
-        
-        <div class="question" id="question">
-            What is your deepest truth?
-        </div>
-
-        <div class="ball" id="ball"></div>
-
-        <form id="answerForm">
-            <input type="text" class="input" id="answer" placeholder="Type your answer..." required>
-            <button type="submit" class="button" id="submit">SUBMIT</button>
-        </form>
-        <div class="progress" id="progress">Question 1 of 10</div>
-        <div class="status" id="status"></div>
+        <h1>DeepSeek Alignment</h1>
+        <button class="start-button" onclick="startAlignment()">Begin Alignment</button>
     </div>
 
     <script>
-        // Initialize DeepSeek system
-        const deepseek = new DeepSeekSystem();
-        const archetypeDetector = new ArchetypeDetector();
-        const easEngine = new EAS_Engine();
-        const biofeedback = new Biofeedback_UI();
-
-        const questions = [
-            "What is your deepest truth?",
-            "What are you most afraid of?",
-            "What do you truly desire?",
-            "What is your greatest strength?",
-            "What is your greatest weakness?",
-            "What is your purpose in life?",
-            "What is your greatest achievement?",
-            "What is your biggest regret?",
-            "What is your ideal future?",
-            "What is your core value?"
-        ];
-
-        const ball = document.getElementById('ball');
-        const question = document.getElementById('question');
-        const answerForm = document.getElementById('answerForm');
-        const answer = document.getElementById('answer');
-        const submit = document.getElementById('submit');
-        const progress = document.getElementById('progress');
-        const status = document.getElementById('status');
-        let currentQuestion = 0;
-        let answers = [];
-
-        function changeBallColor() {
-            const colors = ['#0ff', '#f0f', '#0f0', '#ff0', '#f00'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            ball.style.background = randomColor;
+        function startAlignment() {
+            window.location.href = 'templates/chamber.html';
         }
-
-        function updateStatus(message) {
-            status.textContent = message;
-            setTimeout(() => status.textContent = '', 3000);
-        }
-
-        async function processAnswer(text) {
-            if (!text.trim()) {
-                updateStatus('Please enter a response');
-                return false;
-            }
-
-            try {
-                const response = await fetch('http://localhost:5000/process_truth', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ text: text })
-                });
-
-                const result = await response.json();
-                
-                if (result.status === 'error') {
-                    updateStatus(result.message);
-                    return false;
-                }
-
-                // Update UI with backend response
-                updateStatus(result.message);
-                
-                // Store answer with enhanced data from backend
-                answers.push({
-                    question: questions[currentQuestion],
-                    answer: text,
-                    archetype: result.data.archetype,
-                    eas_score: result.data.eas_score,
-                    chamber_state: result.data.chamber_state,
-                    timestamp: new Date().toISOString()
-                });
-
-                return true;
-            } catch (error) {
-                console.error('Error:', error);
-                updateStatus('Error processing answer. Please try again.');
-                return false;
-            }
-        }
-
-        async function getCurrentState() {
-            try {
-                const response = await fetch('http://localhost:5000/get_state');
-                const state = await response.json();
-                
-                // Update UI with current state
-                if (state.eas_score) {
-                    progress.textContent = `EAS Score: ${state.eas_score}`;
-                }
-                
-                if (state.archetype) {
-                    status.textContent = `Current Archetype: ${state.archetype}`;
-                }
-                
-                return state;
-            } catch (error) {
-                console.error('Error:', error);
-                return null;
-            }
-        }
-
-        function determineChamber() {
-            // Get final archetype
-            const finalArchetype = archetypeDetector.getCurrentArchetype();
-            
-            // Get EAS score
-            const easScore = easEngine.getScore();
-            
-            // Determine chamber based on archetype and EAS
-            const chamber = deepseek.determineChamber(finalArchetype, easScore);
-            
-            // Add chamber-specific keywords for better alignment
-            const keywords = {
-                'al7anoon': ['love', 'heart', 'care', 'compassion', 'kindness'],
-                'w7eaat': ['control', 'power', 'order', 'discipline', 'authority'],
-                'balance': ['harmony', 'peace', 'equilibrium', 'balance', 'center'],
-                'kalem': ['logic', 'truth', 'writing', 'knowledge', 'wisdom', 'pen', 'ink'],
-                'waraq': ['memory', 'records', 'paper', 'scroll', 'archive', 'history'],
-                'ashar': ['transformation', 'change', 'fire', 'purify', 'evolve', 'ten'],
-                'throbgod': ['energy', 'vibration', 'frequency', 'rhythm', 'flow']
-            };
-
-            // Count keyword matches
-            let maxMatches = 0;
-            let selectedChamber = chamber;
-
-            for (const [key, words] of Object.entries(keywords)) {
-                let matches = 0;
-                answers.forEach(answer => {
-                    const text = answer.answer.toLowerCase();
-                    words.forEach(word => {
-                        if (text.includes(word)) {
-                            matches++;
-                        }
-                    });
-                });
-
-                if (matches > maxMatches) {
-                    maxMatches = matches;
-                    selectedChamber = {
-                        name: key.toUpperCase(),
-                        url: `${key}.html`
-                    };
-                }
-            }
-
-            return selectedChamber;
-        }
-
-        function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                question.textContent = questions[currentQuestion];
-                progress.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
-                answer.value = '';
-                answer.focus();
-                return true;
-            } else {
-                const chamber = determineChamber();
-                updateStatus(`Alignment complete! Redirecting to ${chamber.name}...`);
-                setTimeout(() => {
-                    window.location.href = chamber.url;
-                }, 2000);
-                return false;
-            }
-        }
-
-        // Event Listeners
-        answerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const answerText = answer.value.trim();
-            if (await processAnswer(answerText)) {
-                setTimeout(() => {
-                    nextQuestion();
-                }, 1000);
-            }
-        });
-
-        ball.addEventListener('click', changeBallColor);
-
-        // Initialize
-        question.textContent = questions[0];
-        progress.textContent = `Question 1 of ${questions.length}`;
-        answer.focus();
-
-        // Get initial state
-        getCurrentState();
-
-        // Connect to DeepSeek system
-        deepseek.initialize();
-        updateStatus('DeepSeek system connected');
     </script>
 </body>
 </html> 
