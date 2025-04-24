@@ -1,199 +1,325 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Deep Seek Alignment</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek Chamber</title>
     <style>
-        body {
-            background: #000;
-            color: #0ff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary-color: #00a8ff;
+            --secondary-color: #0097e6;
+            --background-color: #1e272e;
+            --text-color: #f5f6fa;
+            --input-bg: #2f3640;
+            --success-color: #4cd137;
+            --warning-color: #fbc531;
+            --error-color: #e84118;
+        }
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
             padding: 2rem;
-            text-align: center;
+            background-color: var(--input-bg);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 168, 255, 0.2);
         }
+
         h1 {
-            font-size: 2.5rem;
+            text-align: center;
             margin-bottom: 2rem;
-            text-shadow: 0 0 10px #0ff;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
         }
-        .question-counter {
-            font-size: 1.5rem;
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        #questionText {
+            font-size: 1.2rem;
             margin-bottom: 1rem;
-            color: #0ff;
-            text-shadow: 0 0 5px #0ff;
+            transition: opacity 0.5s ease;
         }
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #222;
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        .fade-in {
+            opacity: 1;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 1rem;
             margin-bottom: 1rem;
-            border-radius: 2px;
-            overflow: hidden;
         }
-        .progress {
-            height: 100%;
-            background: #0ff;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 10px #0ff;
-        }
-        input {
-            width: 100%;
-            max-width: 600px;
+
+        #answerInput {
+            flex: 1;
             padding: 1rem;
-            margin-bottom: 1rem;
-            background: #222;
-            border: 2px solid #0ff;
-            color: #fff;
-            font-size: 1.2rem;
+            background-color: var(--background-color);
+            border: 2px solid var(--primary-color);
             border-radius: 5px;
-        }
-        button {
-            background: #0ff;
-            color: #000;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 5px;
+            color: var(--text-color);
+            font-size: 1rem;
             transition: all 0.3s ease;
         }
+
+        #answerInput:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        button {
+            padding: 1rem 2rem;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
         button:hover {
-            background: #fff;
-            box-shadow: 0 0 20px #0ff;
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
         }
+
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: var(--background-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .eas-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        #easBar {
+            flex: 1;
+            height: 10px;
+            background-color: var(--background-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #easBar > div {
+            height: 100%;
+            background-color: var(--success-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        #pulseBall {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+
         #reaction {
-            margin-top: 2rem;
-            font-size: 1.2rem;
-            color: #0ff;
-            text-shadow: 0 0 5px #0ff;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: #111;
-            border-radius: 10px;
-            box-shadow: 0 0 20px #0ff;
-        }
+
         .user-info {
             margin-bottom: 2rem;
             padding: 1rem;
-            background: #222;
+            background-color: var(--background-color);
             border-radius: 5px;
-            border: 1px solid #0ff;
+        }
+
+        .user-info div {
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info span {
+            color: var(--primary-color);
+        }
+
+        .completion-message {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Deep Seek Alignment</h1>
-        <div id="userInfo" class="user-info" style="display: none;">
-            <div>User: <span id="userName"></span></div>
-            <div>Session: <span id="sessionId"></span></div>
+        <h1>DeepSeek Chamber</h1>
+        <div class="question-container">
+            <div id="questionText"></div>
+            <div class="eas-container">
+                <div id="easBar"><div></div></div>
+                <div id="pulseBall"></div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressBar"></div>
+                </div>
+            </div>
+            <div id="reaction"></div>
+            <div class="input-container">
+                <input type="text" id="answerInput" placeholder="Enter your answer..." required>
+                <button onclick="submitAnswer()">Submit</button>
+            </div>
         </div>
-        <div class="question-counter" id="questionCounter">Question 1 of 10</div>
-        <div class="progress-bar">
-            <div class="progress" id="progressBar" style="width: 0%"></div>
-        </div>
-        <div id="questionText">What is your deepest truth?</div>
-        <input id="answerInput" type="text" placeholder="Enter your truth..." required />
-        <button onclick="submitAnswer()">Submit</button>
-        <div id="reaction"></div>
     </div>
 
     <script type="module">
-        import questionManager from '../deepseek-questions.js';
-        import dataCenter from '../data_center.js';
+        import uiManager from '../ui-manager.js';
+        import feedbackEngine from '../feedback-engine.js';
+        import { QuestionManager } from '../deepseek-questions.js';
+        import { DataCenter } from '../data_center.js';
 
-        // Initialize user session
-        let userId = localStorage.getItem('deepseek_userId');
-        if (!userId) {
-            const userName = prompt('Please enter your name to begin:');
-            if (userName) {
-                userId = dataCenter.registerUser(userName);
-                localStorage.setItem('deepseek_userId', userId);
-                document.getElementById('userInfo').style.display = 'block';
-                document.getElementById('userName').textContent = userName;
-                document.getElementById('sessionId').textContent = userId;
-            }
-        } else {
-            const user = dataCenter.users.get(userId);
-            if (user) {
-                document.getElementById('userInfo').style.display = 'block';
-                document.getElementById('userName').textContent = user.name;
-                document.getElementById('sessionId').textContent = userId;
-            }
-        }
+        const questionManager = new QuestionManager();
+        const dataCenter = new DataCenter();
+        const totalSteps = questionManager.getTotalQuestions();
+        let questionIndex = 0;
 
-        function updateProgress() {
-            const progress = questionManager.getProgress();
-            document.getElementById('progressBar').style.width = `${progress.percentage}%`;
-            document.getElementById('questionCounter').textContent = 
-                `Question ${progress.current} of ${progress.total}`;
-            document.getElementById('questionText').textContent = questionManager.getCurrentQuestion().text;
-        }
+        // Initialize UI elements
+        const questionText = document.getElementById('questionText');
+        const answerInput = document.getElementById('answerInput');
+        const submitButton = document.querySelector('button');
+        const progressBar = document.getElementById('progressBar');
+        const reaction = document.getElementById('reaction');
+
+        // Show first question
+        questionText.textContent = `Step ${questionIndex + 1}: ${questionManager.getCurrentQuestion().text}`;
+        questionText.classList.add('fade-in');
 
         window.submitAnswer = async function() {
-            const answerInput = document.getElementById('answerInput');
             const answer = answerInput.value.trim();
             
             if (!answer) {
-                alert('Please enter your answer');
+                answerInput.classList.add('shake');
+                setTimeout(() => answerInput.classList.remove('shake'), 300);
                 return;
             }
 
-            if (!userId) {
-                alert('Please enter your name to begin');
-                return;
-            }
+            // Disable input and button
+            answerInput.disabled = true;
+            submitButton.disabled = true;
 
-            try {
-                // Submit answer to question manager
-                const result = questionManager.submitAnswer(answer);
-                
-                if (result.success) {
-                    // Save answer to data center
-                    dataCenter.saveAnswer(userId, result.currentQuestion, answer);
+            const currentQuestion = questionManager.getCurrentQuestion();
+            const easScore = dataCenter.getEASScore();
+            
+            // Process answer and get reaction
+            const feedback = feedbackEngine.processAnswer(answer, currentQuestion.archetype, easScore);
+            reaction.textContent = feedback.message;
+            reaction.style.opacity = '1';
 
-                    // Update UI
-                    updateProgress();
-                    answerInput.value = '';
-                    answerInput.focus();
+            // Store answer
+            dataCenter.saveAnswer(currentQuestion.id, answer);
+            
+            // Update EAS score
+            const newEASScore = easScore + (feedback.type === 'positive' ? 1 : feedback.type === 'negative' ? -1 : 0);
+            dataCenter.setEASScore(newEASScore);
+            uiManager.updateEASBar(newEASScore);
 
-                    // Show reaction
-                    document.getElementById('reaction').textContent = result.message;
+            // Wait 5 seconds before transitioning
+            setTimeout(() => {
+                questionIndex++;
+                const isFinal = questionIndex >= totalSteps;
 
-                    // If completed all questions
-                    if (result.isComplete) {
-                        document.querySelector('.container').innerHTML = `
-                            <h1>Alignment Complete</h1>
-                            <div class="user-info">
-                                <div>User: <span id="userName">${dataCenter.users.get(userId).name}</span></div>
-                                <div>Session: <span id="sessionId">${userId}</span></div>
-                            </div>
-                            <div style="margin: 2rem 0;">
-                                Your answers have been saved to the data center.
-                            </div>
-                            <button onclick="location.reload()">Start New Session</button>
-                        `;
+                // Fade out current question
+                questionText.classList.remove('fade-in');
+                questionText.classList.add('fade-out');
+
+                setTimeout(() => {
+                    if (!isFinal) {
+                        // Update to next question
+                        questionText.textContent = `Step ${questionIndex + 1}: ${questionManager.getCurrentQuestion().text}`;
+                        updateProgress();
+                    } else {
+                        // Show completion screen
+                        questionText.innerHTML = `<strong>Awakening Complete. Your truth is recorded.</strong>`;
+                        const userInfo = {
+                            name: dataCenter.getUserName(),
+                            sessionId: dataCenter.getSessionId(),
+                            easScore: newEASScore
+                        };
+                        uiManager.showFinalScreen(userInfo);
                     }
-                } else {
-                    document.getElementById('reaction').textContent = result.message;
-                }
-            } catch (error) {
-                document.getElementById('reaction').textContent = 'Error saving answer: ' + error.message;
-            }
+
+                    // Fade in new content
+                    questionText.classList.remove('fade-out');
+                    questionText.classList.add('fade-in');
+
+                    if (!isFinal) {
+                        // Re-enable input and button
+                        answerInput.value = '';
+                        answerInput.disabled = false;
+                        submitButton.disabled = false;
+                        answerInput.focus();
+                    }
+                }, 500); // Wait for fade-out transition
+            }, 5000); // Main wait period
         };
 
-        // Handle Enter key
-        document.getElementById('answerInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                submitAnswer();
-            }
-        });
-
-        // Initialize progress
-        updateProgress();
+        function updateProgress() {
+            const progress = (questionIndex / totalSteps) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
     </script>
 </body>
 </html> 
